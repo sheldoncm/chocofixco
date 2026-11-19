@@ -1,0 +1,45 @@
+
+<section class="chocofix-delete-page">
+    <div class="chocofix-delete-card">
+
+        <span class="chocofix-delete-warning">
+            ⚠ DELETE CONFIRMATION
+        </span>
+
+        <h1>Delete Chocolate?</h1>
+
+        <p>
+            Are you sure you want to delete
+            <strong><%= product.name %></strong>?
+        </p>
+
+        <p>
+            This action cannot be undone.
+            The product will be removed from your catalogue.
+        </p>
+
+        <!--
+          LEARNING NOTE:
+          POST performs the database DELETE operation.
+          GET only displays the confirmation page.
+        -->
+
+        <form method="POST"
+              action="/manage/products/<%= product.product_id %>/delete">
+
+            <div class="chocofix-delete-actions">
+
+                <a href="/manage/products"
+                   class="chocofix-cancel-button">
+                    Cancel
+                </a>
+
+                <button type="submit"
+                        class="chocofix-delete-button">
+                    Delete Product
+                </button>
+
+            </div>
+        </form>
+    </div>
+</section>

@@ -1,0 +1,431 @@
+
+<%
+/*
+ * MODULE 8 LEARNING NOTE:
+ * EJS receives product records from the Express route.
+ * These values provide a safe fallback for the summary
+ * cards if the route has not supplied summary statistics.
+ */
+const productSummary = typeof summary !== 'undefined' && summary
+    ? summary
+    : {
+        total: products.length,
+        active: products.filter(p => Number(p.is_active) === 1).length,
+        inactive: products.filter(p => Number(p.is_active) === 0).length,
+        low_stock: products.filter(
+            p => Number(p.stock_quantity) >= 1 &&
+                 Number(p.stock_quantity) <= 10
+        ).length
+    };
+%>
+<section class="cf-products-admin">
+
+    <div class="cf-admin-header">
+        <div>
+            <p class="cf-admin-eyebrow">CHOCOFIXCO ADMIN</p>
+            <h1>Manage Chocolates</h1>
+            <p>Manage your product catalogue and inventory.</p>
+        </div>
+
+        <a class="cf-primary-button"
+           href="/manage/products/create">
+            + Add Product
+        </a>
+    </div>
+
+    <div class="cf-stats">
+        <div class="cf-stat">
+            <span>Total Products</span>
+            <strong><%= productSummary.total %></strong>
+        </div>
+
+        <div class="cf-stat">
+            <span>Active Products</span>
+            <strong><%= productSummary.active %></strong>
+        </div>
+
+        <div class="cf-stat">
+            <span>Inactive Products</span>
+            <strong><%= productSummary.inactive %></strong>
+        </div>
+
+        <div class="cf-stat">
+            <span>Low Stock (1–10)</span>
+            <strong><%= productSummary.low_stock %></strong>
+        </div>
+    </div>
+
+    <div class="cf-filter-panel">
+        <div class="cf-panel-title">
+            <h2>Find Products</h2>
+            <p>Combine filters to narrow your results.</p>
+        </div>
+
+        <form method="GET"
+              action="/manage/products"
+              class="cf-filter-form">
+
+            <label class="cf-filter-name">
+                Product Name
+                <input type="search"
+                       name="name"
+                       value="<%= name %>"
+                       placeholder="Search chocolates">
+            </label>
+
+            <label>
+                Availability
+                <select name="availability">
+                    <option value="">All</option>
+                    <option value="active"
+                        <%= availability === 'active' ? 'selected' : '' %>>
+                        Active
+                    </option>
+                    <option value="inactive"
+                        <%= availability === 'inactive' ? 'selected' : '' %>>
+                        Inactive
+                    </option>
+                </select>
+            </label>
+
+            <label>
+                Stock Level
+                <select name="stock">
+                    <option value="">All Stock</option>
+                    <option value="available"
+                        <%= stock === 'available' ? 'selected' : '' %>>
+                        In Stock
+                    </option>
+                    <option value="low"
+                        <%= stock === 'low' ? 'selected' : '' %>>
+                        Low Stock (1–10)
+                    </option>
+                    <option value="out"
+                        <%= stock === 'out' ? 'selected' : '' %>>
+                        Out of Stock
+                    </option>
+                </select>
+            </label>
+
+            <label>
+                Min Price (S$)
+                <input type="number"
+                       name="min_price"
+                       min="0"
+                       step="0.01"
+                       value="<%= minPrice %>"
+                       placeholder="0.00">
+            </label>
+
+            <label>
+                Max Price (S$)
+                <input type="number"
+                       name="max_price"
+                       min="0"
+                       step="0.01"
+                       value="<%= maxPrice %>"
+                       placeholder="Any">
+            </label>
+
+            <label>
+                Sort By
+                <select name="sort">
+                    <option value="newest"
+                        <%= sort === 'newest' ? 'selected' : '' %>>
+                        Newest First
+                    </option>
+                    <option value="oldest"
+                        <%= sort === 'oldest' ? 'selected' : '' %>>
+                        Oldest First
+                    </option>
+                    <option value="name_asc"
+                        <%= sort === 'name_asc' ? 'selected' : '' %>>
+                        Name A–Z
+                    </option>
+                    <option value="name_desc"
+                        <%= sort === 'name_desc' ? 'selected' : '' %>>
+                        Name Z–A
+                    </option>
+                    <option value="price_asc"
+                        <%= sort === 'price_asc' ? 'selected' : '' %>>
+                        Price Low–High
+                    </option>
+                    <option value="price_desc"
+                        <%= sort === 'price_desc' ? 'selected' : '' %>>
+                        Price High–Low
+                    </option>
+                    <option value="stock_asc"
+                        <%= sort === 'stock_asc' ? 'selected' : '' %>>
+                        Stock Low–High
+                    </option>
+                    <option value="stock_desc"
+                        <%= sort === 'stock_desc' ? 'selected' : '' %>>
+                        Stock High–Low
+                    </option>
+                </select>
+            </label>
+
+            <div class="cf-filter-actions">
+                <button type="submit"
+                        class="cf-primary-button">
+                    Search Products
+                </button>
+
+                <a href="/manage/products"
+                   class="cf-reset-button">
+                    Clear Filters
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <div class="cf-results-header">
+        <div>
+            <h2>Product Catalogue</h2>
+            <p>
+                Showing <strong><%= products.length %></strong>
+                matching products
+            </p>
+        </div>
+    </div>
+
+    <%
+        // LEARNING NOTE:
+        // Build sorting URLs using the current filter values.
+        // This keeps search criteria when a table heading is clicked.
+        const currentFilters = new URLSearchParams({
+            name,
+            availability,
+            stock,
+            min_price: minPrice,
+            max_price: maxPrice
+        });
+
+        function sortUrl(field) {
+            const options = {
+                name: [
+                    'name_asc', 'name_desc'
+                ],
+                price: [
+                    'price_asc', 'price_desc'
+                ],
+                stock: [
+                    'stock_asc', 'stock_desc'
+                ]
+            };
+
+            const choices = options[field];
+
+            const nextSort = sort === choices[0]
+                ? choices[1]
+                : choices[0];
+
+            const params = new URLSearchParams(
+                currentFilters.toString()
+            );
+
+            params.set('sort', nextSort);
+
+            return '/manage/products?' + params.toString();
+        }
+    %>
+
+    <div class="cf-table-wrap">
+        <table class="cf-products-table">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+
+                    <th scope="col">
+                        <a href="<%= sortUrl('name') %>">
+                            Product
+                            <span aria-hidden="true">↕</span>
+                        </a>
+                    </th>
+
+                    <th scope="col">
+                        <a href="<%= sortUrl('price') %>">
+                            Price
+                            <span aria-hidden="true">↕</span>
+                        </a>
+                    </th>
+
+                    <th scope="col">
+                        <a href="<%= sortUrl('stock') %>">
+                            Stock
+                            <span aria-hidden="true">↕</span>
+                        </a>
+                    </th>
+
+                    <th scope="col">Status</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <% for (const product of products) { %>
+                    <tr>
+                        <td class="cf-product-id">
+                            #<%= product.product_id %>
+                        </td>
+
+                        <td>
+                            <div class="cf-product-cell">
+                                <% if (product.image_path) { %>
+                                    <img
+                                        src="<%= product.image_path %>"
+                                        alt=""
+                                        class="cf-product-thumb"
+                                        loading="lazy">
+                                <% } else { %>
+                                    <div class="cf-product-thumb cf-no-image"
+                                         aria-hidden="true">
+                                        🍫
+                                    </div>
+                                <% } %>
+
+                                <div class="cf-product-info">
+                                    <strong><%= product.name %></strong>
+                                    <small>
+                                        Product #<%= product.product_id %>
+                                    </small>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td class="cf-price">
+                            S$<%= Number(product.price).toFixed(2) %>
+                        </td>
+
+                        <td>
+                            <span class="<%= Number(product.stock_quantity) === 0
+                                ? 'cf-stock-out'
+                                : Number(product.stock_quantity) <= 10
+                                    ? 'cf-stock-low'
+                                    : 'cf-stock-normal' %>">
+                                <%= product.stock_quantity %>
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="cf-status <%= product.is_active
+                                ? 'cf-status-active'
+                                : 'cf-status-inactive' %>">
+                                <%= product.is_active
+                                    ? 'Active'
+                                    : 'Inactive' %>
+                            </span>
+                        </td>
+
+                        <td>
+                            <div class="cf-row-actions">
+                                <a class="cf-edit-action"
+                                   href="/manage/products/<%= product.product_id %>/edit">
+                                    Edit
+                                </a>
+
+                                <button type="button"
+                                        class="cf-delete-action"
+                                        data-delete-id="<%= product.product_id %>"
+                                        data-delete-name="<%= product.name %>">
+                                    Delete
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+
+        <% if (!products.length) { %>
+            <div class="cf-empty-results">
+                <h3>No matching chocolates</h3>
+                <p>Try adjusting or clearing your filters.</p>
+                <a href="/manage/products"
+                   class="cf-reset-button">
+                    Clear Filters
+                </a>
+            </div>
+        <% } %>
+    </div>
+</section>
+
+
+<!--
+  MODULE 8 LEARNING NOTE:
+  The HTML dialog element displays a confirmation modal.
+  JavaScript changes the form action for the selected product.
+  The actual database DELETE still happens in Express via POST.
+-->
+
+<dialog id="cf-delete-dialog" class="cf-delete-dialog">
+    <div class="cf-modal-content">
+        <div class="cf-modal-warning">⚠ DELETE CONFIRMATION</div>
+
+        <h2>Delete Chocolate?</h2>
+
+        <p>
+            Are you sure you want to delete
+            <strong id="cf-delete-product-name"></strong>?
+        </p>
+
+        <p class="cf-modal-note">
+            This action cannot be undone.
+        </p>
+
+        <div class="cf-modal-actions">
+            <button type="button"
+                    id="cf-cancel-delete"
+                    class="cf-modal-cancel">
+                Cancel
+            </button>
+
+            <form id="cf-confirm-delete-form" method="POST">
+                <button type="submit" class="cf-modal-delete">
+                    Delete Product
+                </button>
+            </form>
+        </div>
+    </div>
+</dialog>
+
+<script>
+/*
+ * LEARNING NOTE:
+ * showModal() opens a native browser dialog.
+ * We use textContent to display the product name safely.
+ * The form submits to the existing Express delete route.
+ */
+
+(() => {
+    const dialog = document.getElementById('cf-delete-dialog');
+    const name = document.getElementById('cf-delete-product-name');
+    const form = document.getElementById('cf-confirm-delete-form');
+    const cancel = document.getElementById('cf-cancel-delete');
+
+    document.querySelectorAll('[data-delete-id]').forEach(button => {
+        button.addEventListener('click', () => {
+            const id = button.dataset.deleteId;
+
+            name.textContent = button.dataset.deleteName;
+
+            form.action =
+                '/manage/products/' +
+                encodeURIComponent(id) +
+                '/delete';
+
+            dialog.showModal();
+        });
+    });
+
+    cancel.addEventListener('click', () => {
+        dialog.close();
+    });
+
+    dialog.addEventListener('click', event => {
+        if (event.target === dialog) {
+            dialog.close();
+        }
+    });
+})();
+</script>

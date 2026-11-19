@@ -4,3 +4,7 @@ node_modules/
 *.bak
 *.backup
 *.pre-mongodb-integration.bak
+ChocoFixCo_BELLS_Module5_Submission.zip
+
+# Module 8 uploaded product images
+api/public/uploads/products/

@@ -1,0 +1,235 @@
+
+<section class="management-page product-editor-page">
+    <div class="section-heading">
+        <p class="eyebrow">CHOCOFIXCO BACKEND</p>
+
+        <h1><%= product ? 'Edit Product' : 'Add Product' %></h1>
+
+        <p>
+            <%= product
+                ? 'Update your chocolate product details.'
+                : 'Add a new chocolate to your collection.' %>
+        </p>
+    </div>
+
+    <p><a href="/manage/products">← Back to Products</a></p>
+
+    <!--
+      LEARNING NOTE:
+      enctype="multipart/form-data" is required when a
+      form includes a file upload.
+    -->
+
+    <form method="POST"
+          action="<%= action %>"
+          enctype="multipart/form-data"
+          class="management-form product-upload-form">
+
+        <label for="name">Product Name</label>
+        <input id="name"
+               name="name"
+               maxlength="150"
+               required
+               value="<%= product ? product.name : '' %>">
+
+        <label for="description">Description</label>
+        <textarea id="description"
+                  name="description"
+                  rows="4"><%= product ? product.description || '' : '' %></textarea>
+
+        <label for="price">Price (S$)</label>
+        <input id="price"
+               name="price"
+               type="number"
+               step="0.01"
+               min="0"
+               max="99999999.99"
+               required
+               value="<%= product ? product.price : '' %>">
+
+        <label for="stock_quantity">Stock Quantity</label>
+        <input id="stock_quantity"
+               name="stock_quantity"
+               type="number"
+               min="0"
+               step="1"
+               required
+               value="<%= product ? product.stock_quantity : 0 %>">
+
+        <label for="is_active">Product Availability</label>
+        <select id="is_active" name="is_active">
+            <option value="1"
+                <%= !product || product.is_active ? 'selected' : '' %>>
+                Active — visible in storefront
+            </option>
+            <option value="0"
+                <%= product && !product.is_active ? 'selected' : '' %>>
+                Inactive — hidden from storefront
+            </option>
+        </select>
+
+        <h2>Product Picture</h2>
+
+        <div id="product-dropzone"
+             class="product-dropzone"
+             tabindex="0"
+             role="button"
+             aria-label="Choose or drop a product image">
+
+            <div class="dropzone-content">
+                <span class="dropzone-icon" aria-hidden="true">↑</span>
+                <strong>Drag your product image here</strong>
+                <p>or click to choose a file</p>
+                <small>JPG, PNG or WebP · Maximum 5 MB</small>
+            </div>
+
+            <input id="product_image"
+                   name="product_image"
+                   type="file"
+                   accept="image/jpeg,image/png,image/webp"
+                   class="product-file-input">
+        </div>
+
+        <div id="product-image-preview"
+             class="product-image-preview"
+             hidden>
+            <img id="preview-image"
+                 alt="Selected product picture preview">
+            <button type="button"
+                    id="clear-product-image">
+                Remove selected file
+            </button>
+        </div>
+
+        <p class="product-upload-divider">
+            Or use an existing image path
+        </p>
+
+        <label for="image_path">Existing Image Path</label>
+        <input id="image_path"
+               name="image_path"
+               placeholder="/images/ChocoFixCo_Web_Assets/example.jpg"
+               value="<%= product ? product.image_path || '' : '' %>">
+
+        <% if (product && product.image_path) { %>
+            <div class="product-existing-image">
+                <p>Current product image</p>
+                <img src="<%= product.image_path %>"
+                     alt="Current image for <%= product.name %>">
+            </div>
+        <% } %>
+
+        <p class="product-upload-note">
+            A newly uploaded file takes priority over the
+            existing image path. If you do not select a new
+            file, the current image will be retained.
+        </p>
+
+        <button class="management-button" type="submit">
+            <%= product ? 'Save Changes' : 'Save Product' %>
+        </button>
+    </form>
+</section>
+
+<script>
+/*
+ * MODULE 8 LEARNING NOTES: DRAG AND DROP
+ *
+ * dragover allows a file to be dropped into an element.
+ * drop receives the files.
+ * DataTransfer lets us assign a dropped file to the
+ * existing HTML file input.
+ *
+ * URL.createObjectURL creates a temporary browser preview.
+ * It does not upload the file until the form is submitted.
+ */
+
+(() => {
+    const zone = document.getElementById('product-dropzone');
+    const input = document.getElementById('product_image');
+    const preview = document.getElementById('product-image-preview');
+    const image = document.getElementById('preview-image');
+    const clearButton = document.getElementById('clear-product-image');
+
+    let previewURL = null;
+
+    function clearPreview() {
+        if (previewURL) {
+            URL.revokeObjectURL(previewURL);
+            previewURL = null;
+        }
+
+        input.value = '';
+        image.removeAttribute('src');
+        preview.hidden = true;
+    }
+
+    function showPreview() {
+        const file = input.files[0];
+
+        if (!file) {
+            clearPreview();
+            return;
+        }
+
+        const allowed = [
+            'image/jpeg',
+            'image/png',
+            'image/webp'
+        ];
+
+        if (!allowed.includes(file.type) ||
+            file.size > 5 * 1024 * 1024) {
+            alert('Choose a JPG, PNG or WebP image under 5 MB.');
+            clearPreview();
+            return;
+        }
+
+        if (previewURL) URL.revokeObjectURL(previewURL);
+
+        previewURL = URL.createObjectURL(file);
+        image.src = previewURL;
+        preview.hidden = false;
+    }
+
+    zone.addEventListener('click', () => input.click());
+
+    zone.addEventListener('keydown', event => {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            input.click();
+        }
+    });
+
+    input.addEventListener('click', event => event.stopPropagation());
+    input.addEventListener('change', showPreview);
+
+    zone.addEventListener('dragover', event => {
+        event.preventDefault();
+        zone.classList.add('dragging');
+    });
+
+    zone.addEventListener('dragleave', () => {
+        zone.classList.remove('dragging');
+    });
+
+    zone.addEventListener('drop', event => {
+        event.preventDefault();
+        zone.classList.remove('dragging');
+
+        if (!event.dataTransfer.files.length) return;
+
+        const transfer = new DataTransfer();
+        transfer.items.add(event.dataTransfer.files[0]);
+
+        input.files = transfer.files;
+        showPreview();
+    });
+
+    clearButton.addEventListener('click', clearPreview);
+
+    window.addEventListener('pagehide', () => {
+        if (previewURL) URL.revokeObjectURL(previewURL);
+    });
+})();
+</script>

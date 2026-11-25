@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from 'react'
-import { useSetAtom } from 'jotai'
+import { useSetAtom, useAtomValue } from 'jotai'
 import { useLocation, Link } from 'wouter'
 import axios from 'axios'
 import { confirmationAtom } from '../state/orders'
 import { productsAtom } from '../state/products'
+import { userAtom } from '../state/auth'
 import { money, apiError, singaporeToday } from '../utils/orders'
 
 // FF01: Reactive state and conditional rendering.
@@ -13,7 +14,12 @@ import { money, apiError, singaporeToday } from '../utils/orders'
 
 export default function Checkout({ params }) {
   const id = params.id
+  const user = useAtomValue(userAtom)
+  const customer = user?.role === 'customer' ? user : null
+
   const [product, setProduct] = useState(null)
+  const [addresses, setAddresses] = useState([])
+  const [selectedAddress, setSelectedAddress] = useState('')
   const [loading, setLoading] = useState(true)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
@@ -50,8 +56,52 @@ export default function Checkout({ params }) {
     return () => controller.abort()
   }, [id])
 
+  // LEARNING NOTE: SHARED STATE AND DERIVED VALUES
+  // Authenticated checkout uses the customer's account identity.
+  // Guest checkout continues to use controlled form inputs.
+
+  const customerId = customer?.customer_id
+
+  useEffect(() => {
+    if (!customerId) return
+
+    const controller = new AbortController()
+
+    axios.get('/api/customer/addresses', {
+      signal: controller.signal
+    }).then(response => {
+      setAddresses(response.data)
+    }).catch(() => {
+      // Manual address entry remains available.
+    })
+
+    return () => controller.abort()
+  }, [customerId])
+
+  function chooseAddress(event) {
+    const value = event.target.value
+    setSelectedAddress(value)
+
+    const address = addresses.find(
+      item => String(item.address_id) === value
+    )
+
+    setForm(previous => ({
+      ...previous,
+      delivery_address: address?.delivery_address || '',
+      postal_code: address?.postal_code || ''
+    }))
+  }
+
+  const customerName = customer ? customer.full_name : form.full_name
+  const customerEmail = customer ? customer.email : form.email
+  const customerPhone = customer ? (customer.phone || '') : form.phone
+
   function change(event) {
     const { name, value } = event.target
+    if (name === 'delivery_address' || name === 'postal_code') {
+      setSelectedAddress('')
+    }
     setForm(previous => ({ ...previous, [name]: value }))
   }
 
@@ -73,7 +123,12 @@ export default function Checkout({ params }) {
     setError('')
 
     try {
-      const response = await axios.post('/api/order/' + id, form)
+      const response = await axios.post('/api/order/' + id, {
+        ...form,
+        full_name: customerName,
+        email: customerEmail,
+        phone: customerPhone
+      })
 
       setConfirmation(response.data)
 
@@ -127,20 +182,34 @@ export default function Checkout({ params }) {
         <form className="checkout-form" onSubmit={submit}>
           <h2>Your details</h2>
 
+          {customer ? (
+            <p>
+              Ordering as {customer.full_name}.{' '}
+              <Link href="/account">Edit profile</Link>
+            </p>
+          ) : (
+            <p>
+              Already registered?{' '}
+              <Link href="/login">Sign in</Link>
+              {' '}or continue as a guest.
+            </p>
+          )}
+
+
           {error && <div className="alert alert-danger"
             role="alert">{error}</div>}
 
           <label htmlFor="full_name">Full name</label>
           <input id="full_name" name="full_name" maxLength={150}
-            value={form.full_name} onChange={change} required />
+            value={customerName} onChange={change} readOnly={Boolean(customer)} required />
 
           <label htmlFor="email">Email address</label>
           <input id="email" name="email" type="email" maxLength={255}
-            value={form.email} onChange={change} required />
+            value={customerEmail} onChange={change} readOnly={Boolean(customer)} required />
 
           <label htmlFor="phone">Phone (optional)</label>
           <input id="phone" name="phone" type="tel" maxLength={30}
-            value={form.phone} onChange={change} />
+            value={customerPhone} onChange={change} readOnly={Boolean(customer)} />
 
           <label htmlFor="quantity">Quantity</label>
           <input id="quantity" name="quantity" type="number"
@@ -175,6 +244,23 @@ export default function Checkout({ params }) {
 
           {delivery && (
             <>
+              {customer && addresses.length > 0 && (
+                <>
+                  <label htmlFor="saved_address">Saved delivery address</label>
+                  <select id="saved_address" className="form-select"
+                    value={selectedAddress} onChange={chooseAddress}>
+                    <option value="">Enter address manually</option>
+                    {addresses.map(address => (
+                      <option key={address.address_id}
+                        value={address.address_id}>
+                        {address.label} — {address.postal_code}
+                        {address.is_default ? ' (Default)' : ''}
+                      </option>
+                    ))}
+                  </select>
+                </>
+              )}
+
               <label htmlFor="delivery_address">Delivery address</label>
               <input id="delivery_address" name="delivery_address"
                 minLength={5} maxLength={255}
@@ -197,7 +283,7 @@ export default function Checkout({ params }) {
 
           {Number(product.stock_quantity) > 0 ? (
             <button className="checkout-submit" type="submit"
-              disabled={busy}>
+              disabled={busy || user === undefined}>
               {busy ? 'Placing order...' : 'Place Order'}
             </button>
           ) : <p>This chocolate is currently sold out.</p>}

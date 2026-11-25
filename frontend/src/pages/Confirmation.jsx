@@ -1,6 +1,7 @@
 import { useAtomValue } from 'jotai'
 import { Link } from 'wouter'
 import { confirmationAtom } from '../state/orders'
+import { userAtom } from '../state/auth'
 import { money, fulfilment } from '../utils/orders'
 
 // FF03: Read shared state from another component.
@@ -8,12 +9,20 @@ import { money, fulfilment } from '../utils/orders'
 
 export default function Confirmation({ params }) {
   const order = useAtomValue(confirmationAtom)
+  const user = useAtomValue(userAtom)
 
   if (!order || String(order.order_id) !== params.id) {
     return (
       <section className="order-confirmation">
         <h1>Order confirmation</h1>
         <p>The confirmation is no longer available in this session.</p>
+        {user?.role === 'customer' && (
+          <p>
+            <Link href={'/account/orders/' + params.id}>
+              View Order Details
+            </Link>
+          </p>
+        )}
         <Link className="boutique-button" href="/">Back to Shop</Link>
       </section>
     )
@@ -52,6 +61,12 @@ export default function Confirmation({ params }) {
           <p key={label}><strong>{label}:</strong> {value}</p>
         ))}
       </div>
+
+      {user?.role === 'customer' && (
+        <p className="mt-3">
+          <Link href="/account/orders">View My Orders</Link>
+        </p>
+      )}
 
       <Link href="/" className="boutique-button">
         Back to Chocolate Shop

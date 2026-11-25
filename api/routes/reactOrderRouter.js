@@ -154,11 +154,31 @@ router.post('/:id', async (req, res, next) => {
         const deliveryFee = (deliveryFeeCents / 100).toFixed(2);
 
         // DML INSERT 1: Customer.
-        const [customerResult] = await connection.execute(
-            `INSERT INTO Customers (full_name, email, phone)
-             VALUES (?, ?, ?)`,
-            [name, email, phone || null]
-        );
+        // LEARNING NOTE: AUTHENTICATION AND DATA OWNERSHIP
+        // Registered customers reuse their linked customer ID.
+        // Guest customers receive a separate customer record.
+        // Never trust a customer ID supplied by the browser.
+
+        let customerId;
+
+        if (req.user?.role === 'customer') {
+            customerId = req.user.customer_id;
+
+            if (!customerId) {
+                await connection.rollback();
+                return res.status(409).json({
+                    error: 'Customer account is incomplete.'
+                });
+            }
+        } else {
+            const [customerResult] = await connection.execute(
+                `INSERT INTO Customers (full_name, email, phone)
+                 VALUES (?, ?, ?)`,
+                [name, email, phone || null]
+            );
+
+            customerId = customerResult.insertId;
+        }
 
         // DML INSERT 2: Order linked to Customer.
         const [orderResult] = await connection.execute(
@@ -169,7 +189,7 @@ router.post('/:id', async (req, res, next) => {
               postal_code, delivery_fee)
              VALUES (?, ?, 'Pending', 'Unpaid', ?, ?, ?, ?, ?)`,
             [
-                customerResult.insertId,
+                customerId,
                 collectionDate,
                 totalAmount,
                 fulfilmentMethod,

@@ -19,7 +19,7 @@ export default function Footer() {
             <div className="footer-links">
                 <a href="/">Home</a>
                 <a href="/#collection">Chocolates</a>
-                <a href="/backend">Backend</a>
+
             </div>
         </div>
 

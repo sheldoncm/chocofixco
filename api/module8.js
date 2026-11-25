@@ -19,6 +19,18 @@ const path = require('path');
 const expressLayouts = require('express-ejs-layouts');
 const db = require('./db');
 
+const {
+    optionalAuth,
+    requireAdmin,
+    sameOriginWrites
+} = require('./middleware/auth');
+
+if (!process.env.JWT_SECRET ||
+    process.env.JWT_SECRET.length < 64) {
+    throw new Error('A strong JWT_SECRET is required.');
+}
+
+
 const app = express();
 const PORT = process.env.MODULE8_PORT || 3001;
 
@@ -33,6 +45,21 @@ app.set('layout', 'layouts/base');
 // Read HTML form submissions and JSON request bodies.
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+// LEARNING NOTE: REUSABLE AUTHENTICATION MIDDLEWARE
+// Identify the current user before protected routes execute.
+app.use(sameOriginWrites);
+app.use(optionalAuth);
+
+app.use('/api/auth', require('./routes/authRouter'));
+app.use('/api/security', require('./routes/accountSecurityRouter'));
+app.use('/api/admin/auth', require('./routes/adminAuthRouter'));
+app.use('/api/customer/addresses', require('./routes/customerAddressRouter'));
+app.use('/api/customer', require('./routes/customerRouter'));
+app.use('/api/manage/users', requireAdmin, require('./routes/adminUserRouter'));
+app.use('/api/account', require('./routes/accountLifecycleRouter'));
+
+
 
 // Make our existing storefront assets available to browsers.
 app.use(express.static(path.join(__dirname, 'public')));
@@ -63,7 +90,7 @@ app.get('/', async (req, res) => {
 
 // BACKEND DASHBOARD
 // GET displays the central management page using EJS.
-app.get('/backend', (req, res) => {
+app.get('/backend', requireAdmin, (req, res) => {
     res.render('backend/index', {
         title: 'Backend | ChocoFixCo'
     });
@@ -72,22 +99,22 @@ app.get('/backend', (req, res) => {
 // MODULE 8 PRODUCT CRUD
 // Mount the router at /manage/products.
 // Individual CRUD routes are defined in routes/productRouter.js.
-app.use('/manage/products', require('./routes/productRouter'));
+app.use('/manage/products', requireAdmin, require('./routes/productRouter'));
 
 // Customer ordering: GET form, POST order, GET confirmation.
 app.use('/order', require('./routes/orderRouter'));
 
 // Order Management: read, search, update and cancel.
-app.use('/manage/orders', require('./routes/orderManagementRouter'));
+app.use('/manage/orders', requireAdmin, require('./routes/orderManagementRouter'));
 
 // Modern Frameworks: JSON REST API for the React frontend.
 app.use('/api/products', require('./routes/reactProductRouter'));
 
-app.use('/api/manage/products', require('./routes/reactManagementRouter'));
+app.use('/api/manage/products', requireAdmin, require('./routes/reactManagementRouter'));
 
 app.use('/api/order', require('./routes/reactOrderRouter'));
 
-app.use('/api/manage/orders', require('./routes/reactOrderManagementRouter'));
+app.use('/api/manage/orders', requireAdmin, require('./routes/reactOrderManagementRouter'));
 
 // Start the server after Express has registered its routes.
 app.listen(PORT, () => {

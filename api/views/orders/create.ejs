@@ -1,0 +1,182 @@
+
+<section class="order-checkout">
+    <div class="checkout-heading">
+        <p class="boutique-label">CHOCOFIXCO ORDERS</p>
+        <h1>Make it a sweet moment.</h1>
+        <p>Complete your details to arrange collection or home delivery.</p>
+    </div>
+
+    <div class="checkout-layout">
+        <div class="checkout-product">
+            <img src="<%= product.image_path || '/images/chocofixco-products/12_chocolate-box-assorted.jpg' %>"
+                 alt="<%= product.name %>">
+
+            <h2><%= product.name %></h2>
+            <p><%= product.description %></p>
+            <strong>S$<%= Number(product.price).toFixed(2) %></strong>
+            <p>Available stock: <%= product.stock_quantity %></p>
+        </div>
+
+        <form class="checkout-form"
+              method="POST"
+              action="/order/<%= product.product_id %>">
+
+            <h2>Your details</h2>
+
+            <label for="full_name">Full name</label>
+            <input id="full_name" name="full_name"
+                   maxlength="150" required>
+
+            <label for="email">Email address</label>
+            <input id="email" name="email" type="email"
+                   maxlength="255" required>
+
+            <label for="phone">Phone (optional)</label>
+            <input id="phone" name="phone" type="tel"
+                   maxlength="30">
+
+            <label for="quantity">Quantity</label>
+            <input id="quantity" name="quantity" type="number"
+                   min="1"
+                   max="<%= Math.min(10, Number(product.stock_quantity)) %>"
+                   value="1" required>
+
+            <!-- LEARNING NOTE:
+                 Radio buttons let customers choose one fulfilment method.
+                 Delivery costs S$10 per order, not per product.
+            -->
+            <label>Fulfilment method</label>
+            <div class="fulfilment-options">
+                <label>
+                    <input type="radio" name="fulfilment_method"
+                           value="Collection" checked>
+                    Self Collection — Free
+                </label>
+                <label>
+                    <input type="radio" name="fulfilment_method"
+                           value="Delivery">
+                    Home Delivery — S$10.00
+                </label>
+            </div>
+
+            <label for="collection_date" id="fulfilment-date-label">
+                Collection date
+            </label>
+            <input id="collection_date" name="collection_date"
+                   type="date" required>
+
+            <div id="delivery-fields" hidden>
+                <label for="delivery_address">Delivery address</label>
+                <input id="delivery_address"
+                       name="delivery_address"
+                       maxlength="255"
+                       autocomplete="street-address">
+
+                <label for="postal_code">Singapore postal code</label>
+                <input id="postal_code"
+                       name="postal_code"
+                       inputmode="numeric"
+                       pattern="[0-9]{6}"
+                       maxlength="6"
+                       placeholder="e.g. 123456">
+            </div>
+
+            <p id="delivery-fee-note" hidden>
+                Home delivery fee: S$10.00 per order
+            </p>
+
+            <div class="checkout-total">
+                <span>Estimated total</span>
+                <strong id="order-total">
+                    S$<%= Number(product.price).toFixed(2) %>
+                </strong>
+            </div>
+
+            <% if (Number(product.stock_quantity) > 0) { %>
+                <button class="checkout-submit" type="submit">
+                    Place Order
+                </button>
+            <% } else { %>
+                <p>This chocolate is currently sold out.</p>
+            <% } %>
+
+            <p class="checkout-note">
+                Payment status will be recorded as Unpaid.
+                No online payment is collected.
+            </p>
+        </form>
+    </div>
+</section>
+
+<script>
+/*
+ * LEARNING NOTE: CLIENT-SIDE INTERACTION
+ *
+ * The form shows delivery fields only when needed.
+ * JavaScript updates the estimated total.
+ * The Express backend must independently validate
+ * the fulfilment method and calculate the final fee.
+ */
+const quantityInput = document.getElementById('quantity');
+const totalOutput = document.getElementById('order-total');
+const dateInput = document.getElementById('collection_date');
+const dateLabel = document.getElementById('fulfilment-date-label');
+const deliveryFields = document.getElementById('delivery-fields');
+const deliveryAddress = document.getElementById('delivery_address');
+const postalCode = document.getElementById('postal_code');
+const deliveryFeeNote = document.getElementById('delivery-fee-note');
+const fulfilmentOptions =
+    document.querySelectorAll('input[name="fulfilment_method"]');
+
+const unitPriceCents = <%- Math.round(Number(product.price) * 100) %>;
+const deliveryFeeCents = 1000;
+
+function isDelivery() {
+    return document.querySelector(
+        'input[name="fulfilment_method"]:checked'
+    )?.value === 'Delivery';
+}
+
+function updateCheckout() {
+    const delivery = isDelivery();
+
+    deliveryFields.hidden = !delivery;
+    deliveryFeeNote.hidden = !delivery;
+
+    deliveryAddress.required = delivery;
+    postalCode.required = delivery;
+
+    dateLabel.textContent =
+        delivery ? 'Preferred delivery date' : 'Collection date';
+
+    const quantity = Number(quantityInput.value) || 0;
+    const subtotalCents = unitPriceCents * quantity;
+    const totalCents =
+        subtotalCents + (delivery ? deliveryFeeCents : 0);
+
+    totalOutput.textContent =
+        'S$' + (totalCents / 100).toFixed(2);
+}
+
+quantityInput.addEventListener('input', updateCheckout);
+
+fulfilmentOptions.forEach(option => {
+    option.addEventListener('change', updateCheckout);
+});
+
+if (dateInput) {
+    const parts = new Intl.DateTimeFormat('en-GB', {
+        timeZone: 'Asia/Singapore',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+    }).formatToParts(new Date());
+
+    const part = type => parts.find(p => p.type === type).value;
+
+    dateInput.min =
+        part('year') + '-' + part('month') + '-' + part('day');
+}
+
+updateCheckout();
+</script>

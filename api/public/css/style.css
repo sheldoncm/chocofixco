@@ -1,0 +1,3994 @@
+/* =========================================================
+   CHOCOFIXCO - CUSTOMER WEBSITE CSS STUDY NOTES
+
+   HTML = structure
+   CSS  = presentation
+   JS   = interaction
+   ========================================================= */
+
+
+/* =========================================================
+   ===== CSS BOX MODEL =====
+
+   MARGIN
+   ┌─────────────────────────────┐
+   │ BORDER                      │
+   │  ┌───────────────────────┐  │
+   │  │ PADDING               │  │
+   │  │  CONTENT              │  │
+   │  └───────────────────────┘  │
+   └─────────────────────────────┘
+
+   margin  = outside space
+   border  = edge
+   padding = inside space
+   content = text/image/etc.
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: #3b2118;
+    background-color: #fff9f1;
+}
+
+a {
+    color: inherit;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+
+/* =========================================================
+   ===== COLOUR + TYPOGRAPHY DESIGN SYSTEM =====
+
+   UI/UX STUDY NOTE:
+   A consistent colour palette creates visual hierarchy and
+   makes the interface easier to understand.
+
+   Cream       = page background
+   Chocolate   = headings / primary actions
+   Caramel     = labels / accents
+   Soft peach  = highlighted sections
+
+   Serif headings create a handcrafted/premium feeling.
+   Sans-serif body text remains simple and easy to read.
+   ========================================================= */
+
+h1,
+h2,
+h3 {
+    font-family: Georgia, "Times New Roman", serif;
+}
+
+
+/* =========================================================
+   ===== HEADER / NAVIGATION =====
+   ========================================================= */
+
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #ffffff;
+    border-bottom: 1px solid #ead8c8;
+}
+
+.nav-container {
+    /* Full-width navigation.
+       The header stretches across the screen while padding
+       keeps the content away from the browser edges. */
+    width: 100%;
+    min-height: 82px;
+    padding: 8px 40px;
+
+    /* ===== FLEXBOX ===== */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.brand {
+    display: block;
+    text-decoration: none;
+}
+
+.brand img {
+    width: 150px;
+    max-height: 62px;
+    object-fit: contain;
+}
+
+.nav-links {
+    /* ===== FLEXBOX ===== */
+    display: flex;
+    align-items: center;
+    gap: 26px;
+}
+
+.nav-links a {
+    text-decoration: none;
+}
+
+.nav-order-button {
+    padding: 10px 16px;
+    background-color: #6b2f12;
+    color: #ffffff;
+    border-radius: 6px;
+}
+
+/* Hidden on desktop. The media query below displays this
+   button on smaller screens. */
+.menu-toggle {
+    display: none;
+    border: 0;
+    background: transparent;
+    color: #6b2f12;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   ===== HERO =====
+   ========================================================= */
+
+
+/* =========================================================
+   ===== HERO CAROUSEL + FLOATING CTA STUDY NOTES =====
+
+   CAROUSEL:
+   Several images share one display area.
+   JavaScript changes the <img> src property.
+
+   FLOATING CTA:
+   CTA means Call To Action.
+   .hero-visual uses position: relative.
+   .hero-floating-cta uses position: absolute.
+   Therefore the CTA can sit OVER the hero image.
+
+   ORAL ANSWER:
+   "The carousel uses an array, an index, click events and
+   DOM manipulation. The floating CTA uses CSS positioning."
+
+   On mobile the controls remain large enough to tap and
+   the CTA stays visible over the responsive image.
+   ========================================================= */
+
+.hero {
+    max-width: 1180px;
+    min-height: 520px;
+    margin: 0 auto;
+    padding: 70px 24px;
+
+    /* ===== FLEXBOX ===== */
+    display: flex;
+    align-items: center;
+    gap: 60px;
+}
+
+.hero-content,
+.hero-visual {
+    flex: 1 1 50%;
+}
+
+.eyebrow {
+    color: #b76432;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.hero h1 {
+    margin: 12px 0 18px;
+    color: #4a2115;
+    font-size: clamp(42px, 6vw, 72px);
+    line-height: 1.02;
+}
+
+.hero-copy {
+    max-width: 540px;
+    font-size: 18px;
+    line-height: 1.7;
+    color: #6e5548;
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+}
+
+.primary-button {
+    display: inline-block;
+    padding: 13px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.primary-button {
+    background-color: #6b2f12;
+    color: white;
+}
+
+
+.hero-visual {
+    position: relative;
+    min-height: 390px;
+    overflow: hidden;
+    border-radius: 28px;
+    box-shadow: 0 18px 45px rgba(74, 33, 21, 0.14);
+}
+
+.hero-visual img {
+    width: 100%;
+    height: 390px;
+    object-fit: cover;
+}
+
+/* ===== FLOATING CTA ===== */
+.hero-floating-cta {
+    position: absolute;
+    left: 24px;
+    bottom: 24px;
+    z-index: 3;
+    padding: 13px 20px;
+    border-radius: 6px;
+    background-color: #6b2f12;
+    color: #ffffff;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+/* ===== CAROUSEL CONTROLS ===== */
+.carousel-button {
+    position: absolute;
+    top: 50%;
+    z-index: 3;
+    width: 44px;
+    height: 44px;
+    border: 0;
+    border-radius: 50%;
+    background-color: rgba(255, 249, 241, 0.88);
+    color: #4a2115;
+    font-size: 30px;
+    cursor: pointer;
+    transform: translateY(-50%);
+}
+
+.carousel-previous {
+    left: 14px;
+}
+
+.carousel-next {
+    right: 14px;
+}
+
+.carousel-dots {
+    position: absolute;
+    right: 24px;
+    bottom: 24px;
+    z-index: 3;
+    display: flex;
+    gap: 8px;
+}
+
+.carousel-dot {
+    width: 12px;
+    height: 12px;
+    padding: 0;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.carousel-dot.active {
+    background-color: #ffffff;
+}
+
+
+/* =========================================================
+   ===== COMMON SECTIONS =====
+   ========================================================= */
+
+.content-section,
+.order-section {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 75px 24px;
+}
+
+.section-heading {
+    max-width: 650px;
+    margin-bottom: 32px;
+}
+
+.section-heading h2 {
+    margin: 8px 0;
+    color: #4a2115;
+    font-size: 36px;
+}
+
+.section-heading p:last-child {
+    color: #786257;
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   ===== FLEXBOX PRODUCT CARDS =====
+
+   display:flex turns the parent into a Flexbox container.
+   flex-wrap allows cards to move to a new row.
+   gap creates spacing between cards.
+   ========================================================= */
+
+.product-grid,
+#order-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px;
+}
+
+.product-card,
+.order-card {
+    flex: 1 1 280px;
+    padding: 20px;
+    background-color: white;
+    border: 1px solid #ead8c8;
+    border-radius: 14px;
+}
+
+.product-card {
+    overflow: hidden;
+}
+
+.product-image {
+    width: 100%;
+    height: 230px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.product-card h3,
+.order-card h3 {
+    color: #4a2115;
+}
+
+.product-card p,
+.order-card p {
+    color: #705b50;
+    line-height: 1.5;
+}
+
+.product-order-link {
+    display: inline-block;
+    margin-top: 8px;
+    color: #6b2f12;
+    font-weight: bold;
+}
+
+/* Extra real-product imagery makes the customer page feel
+   like a chocolate shop rather than an internal dashboard. */
+.product-gallery {
+    margin-top: 28px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+}
+
+.product-gallery img {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+
+/* =========================================================
+   ===== ORDER FORM =====
+   ========================================================= */
+
+.order-section {
+    max-width: none;
+    background-color: #f8e5d8;
+}
+
+.order-section > * {
+    max-width: 760px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.order-form {
+    padding: 28px;
+    background-color: white;
+    border-radius: 14px;
+
+    /* ===== FLEXBOX ===== */
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-top: 16px;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d9c4b4;
+    border-radius: 5px;
+    background-color: white;
+    font: inherit;
+}
+
+input:focus,
+select:focus {
+    outline: 2px solid #b76432;
+    border-color: transparent;
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.quantity-control input {
+    width: 72px;
+    text-align: center;
+}
+
+.quantity-control input::-webkit-inner-spin-button,
+.quantity-control input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.quantity-control input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+.quantity-control button {
+    width: 42px;
+    height: 42px;
+    border: 0;
+    border-radius: 5px;
+    background-color: #6b2f12;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.quantity-control button:disabled {
+    background-color: #cfc6c2;
+    cursor: not-allowed;
+}
+
+.quantity-limit {
+    color: #786257;
+    font-size: 14px;
+}
+
+.submit-order-button {
+    margin-top: 24px;
+    padding: 13px;
+    border: 0;
+    border-radius: 6px;
+    background-color: #6b2f12;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   ===== CUSTOMER ORDER CARDS =====
+   ========================================================= */
+
+.order-card {
+    max-width: 360px;
+}
+
+.order-card button {
+    margin-top: 10px;
+    margin-right: 8px;
+    padding: 9px 12px;
+    border: 0;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.edit-button {
+    background-color: #6b2f12;
+    color: white;
+}
+
+.delete-button {
+    background-color: #eee8e5;
+    color: #4a2115;
+}
+
+button:not(:disabled):hover,
+.primary-button:hover,
+.nav-order-button:hover,
+.hero-floating-cta:hover {
+    opacity: 0.85;
+}
+
+
+/* =========================================================
+   ===== FOOTER =====
+   ========================================================= */
+
+footer {
+    width: 100%;
+    padding: 35px 40px;
+    background-color: #4a2115;
+    color: white;
+}
+
+/* The footer background and content use the full screen width.
+   Flexbox places the two footer areas side-by-side on desktop. */
+.footer-container {
+    width: 100%;
+
+    /* ===== FLEXBOX ===== */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+.footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.footer-brand img {
+    width: 58px;
+    height: 58px;
+    object-fit: contain;
+}
+
+footer p {
+    margin: 7px 0 0;
+    color: #f0ddcc;
+}
+
+
+/* =========================================================
+   ===== LO9: RESPONSIVE DESIGN =====
+
+   A media query changes the layout on smaller screens.
+   This improves usability on mobile devices.
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    /* ===== RESPONSIVE HEADER =====
+       On mobile:
+       1. Logo stays on the left.
+       2. Hamburger stays on the right.
+       3. Navigation is hidden until JavaScript adds .open.
+    */
+    .nav-container {
+        padding: 10px 18px;
+        flex-wrap: wrap;
+    }
+
+    .brand img {
+        width: 125px;
+    }
+
+    .menu-toggle {
+        display: block;
+        min-width: 44px;
+        min-height: 44px;
+    }
+
+    .nav-links {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding: 12px 0 6px;
+    }
+
+    /* JavaScript uses classList.toggle("open").
+       When .open exists, the mobile menu becomes visible. */
+    .nav-links.open {
+        display: flex;
+    }
+
+    .nav-links a {
+        padding: 12px 4px;
+    }
+
+    .nav-order-button {
+        margin-top: 5px;
+        text-align: center;
+    }
+
+    /* ===== RESPONSIVE HERO ===== */
+    .hero {
+        flex-direction: column;
+        padding-top: 45px;
+    }
+
+    .hero-visual {
+        width: 100%;
+        min-height: 300px;
+    }
+
+    .hero-visual img {
+        height: 300px;
+    }
+
+    .hero-floating-cta {
+        left: 18px;
+        bottom: 18px;
+    }
+
+    .carousel-dots {
+        right: 18px;
+        bottom: 18px;
+    }
+
+    .carousel-button {
+        width: 42px;
+        height: 42px;
+    }
+
+    /* ===== RESPONSIVE CARDS ===== */
+    .product-card,
+    .order-card {
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
+
+    .product-gallery {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .product-gallery img {
+        height: 150px;
+    }
+
+    .quantity-control {
+        flex-wrap: wrap;
+    }
+
+    /* ===== RESPONSIVE FOOTER ===== */
+    footer {
+        padding: 28px 18px;
+    }
+
+    .footer-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 18px;
+    }
+
+}
+
+
+/* =========================================================
+   ===== BACK TO TOP =====
+   A simple anchor link returns the customer to the very top
+   of the page. This is useful on longer pages.
+   ========================================================= */
+
+.back-to-top {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: #6b2f12;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 26px;
+    font-weight: bold;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-shadow: 0 4px 14px rgba(74, 33, 21, 0.20);
+    z-index: 20;
+}
+
+.back-to-top:hover {
+    opacity: 0.85;
+}
+
+@media (max-width: 700px) {
+    .back-to-top {
+        right: 16px;
+        bottom: 16px;
+        width: 44px;
+        height: 44px;
+    }
+}
+
+
+/* =========================================================
+   ===== LIVE REST API DEMO / ASSESSMENT NOTES =====
+   GET = retrieve JSONBin orders.
+   PUT = save the entire orders array to JSONBin.
+   This panel is educational, not a customer checkout step.
+   ========================================================= */
+.api-demo {
+    margin-bottom: 28px;
+    padding: 24px;
+    border-radius: 14px;
+    background: #4a2115;
+    color: #fff9f1;
+}
+.api-demo-label {
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    color: #f3c49c;
+}
+.api-demo h3 { color: #fff9f1; margin: 10px 0; }
+.api-demo > p { line-height: 1.5; }
+.api-demo-actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 20px 0; }
+.api-demo-actions button {
+    padding: 12px 16px;
+    border: 0;
+    border-radius: 6px;
+    background: #fff9f1;
+    color: #4a2115;
+    font: inherit;
+    font-weight: bold;
+    cursor: pointer;
+}
+.api-demo-actions button:disabled { opacity: .6; cursor: wait; }
+.api-feedback {
+    padding: 12px 14px;
+    border-radius: 8px;
+    background: rgba(255,255,255,.12);
+    overflow-wrap: anywhere;
+}
+.api-feedback.error { background: #7c3029; }
+
+/* ===== CUSTOMER ORDER PRODUCT IMAGES + COMPLETION ===== */
+.order-product-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 14px;
+}
+.complete-button {
+    background: #386b48;
+    color: white;
+}
+.complete-button:disabled { opacity: .6; cursor: wait; }
+.completed-label {
+    color: #386b48 !important;
+    font-weight: bold;
+}
+
+
+/* =========================================================
+   ===== SPACING / VISUAL HIERARCHY STUDY NOTES =====
+   Spacing separates groups of related content.
+   gap = space BETWEEN cards in the Flexbox layout.
+   margin-bottom = space OUTSIDE the order list, separating
+   customer orders from the lecturer's REST API demo.
+   padding = space INSIDE the cards and demo panel.
+   ========================================================= */
+#order-list {
+    row-gap: 28px;
+    column-gap: 22px;
+    margin-bottom: 40px;
+    align-items: stretch;
+}
+
+.order-card {
+    padding: 24px;
+}
+
+.order-card .order-product-image {
+    margin-bottom: 18px;
+}
+
+.order-card h3 {
+    margin: 0 0 18px;
+}
+
+.order-card p {
+    margin: 0 0 14px;
+}
+
+.order-card button {
+    margin-top: 12px;
+}
+
+.api-demo {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 30px;
+}
+
+@media (max-width: 700px) {
+    #order-list {
+        margin-bottom: 28px;
+        row-gap: 20px;
+    }
+
+    .order-card {
+        padding: 20px;
+    }
+
+    .api-demo {
+        padding: 22px;
+    }
+}
+
+
+/* =========================================================
+   ===== CUSTOM MODAL / UI UX / BOX MODEL =====
+   dialog.showModal() is controlled by JavaScript.
+   Padding = space inside the modal.
+   gap = space between the action buttons.
+   ::backdrop styles the dimmed page behind the modal.
+   ========================================================= */
+.collection-dialog {
+    width: min(92vw, 500px);
+    max-height: 90vh;
+    overflow-y: auto;
+    border: 1px solid #ead8c8;
+    border-radius: 18px;
+    padding: 32px;
+    background: #fff9f1;
+    color: #4a2115;
+    box-shadow: 0 24px 70px rgba(35, 17, 11, .25);
+}
+.collection-dialog::backdrop {
+    background: rgba(35, 17, 11, .58);
+}
+.collection-dialog h2 {
+    font-size: clamp(25px, 4vw, 32px);
+    line-height: 1.2;
+    margin: 10px 0 16px;
+}
+.collection-dialog #collection-dialog-description {
+    color: #705b50;
+    line-height: 1.65;
+    margin: 0;
+}
+.collection-dialog-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+}
+.collection-dialog-actions button {
+    flex: 1 1 160px;
+    padding: 13px 16px;
+    border: 0;
+    border-radius: 7px;
+    font: inherit;
+    font-weight: bold;
+    cursor: pointer;
+}
+.collection-dialog-cancel {
+    background: #eae1db;
+    color: #4a2115;
+}
+.collection-dialog-confirm {
+    background: #386b48;
+    color: white;
+}
+@media (max-width: 700px) {
+    .collection-dialog { padding: 22px; }
+}
+
+
+/* =========================================================
+   ===== ORDER UPDATE FEEDBACK / UI UX STUDY NOTES =====
+   position: fixed keeps the notification on screen.
+   margin/padding create readable spacing.
+   .recently-updated visually identifies the changed order.
+   ========================================================= */
+.order-notification {
+    position: fixed;
+    top: 100px;
+    right: 24px;
+    z-index: 100;
+    max-width: min(380px, calc(100vw - 32px));
+    padding: 16px 22px;
+    border-radius: 10px;
+    background: #386b48;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, .18);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: opacity .2s, transform .2s, visibility .2s;
+}
+.order-notification.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+.order-card.recently-updated {
+    border: 2px solid #386b48;
+    box-shadow: 0 0 0 4px rgba(56, 107, 72, .12);
+}
+@media (max-width: 700px) {
+    .order-notification {
+        top: 85px;
+        right: 16px;
+        left: 16px;
+        max-width: none;
+    }
+}
+
+
+/* =========================================================
+   ===== ASSESSMENT FOOTER / CSS SPACING STUDY NOTES =====
+   text-align:right positions technical notes at the footer edge.
+   margin controls space OUTSIDE each line.
+   line-height controls readable space BETWEEN lines.
+   A media query aligns notes left on narrow mobile screens.
+   ========================================================= */
+/* Reserve room for the fixed Back to Top button on the right.
+   CSS spacing alone prevents overlap; no extra JavaScript needed. */
+.footer-api-notes {
+    padding-right: 84px;
+    margin-left: auto;
+    text-align: right;
+    font-size: 12px;
+    line-height: 1.65;
+    opacity: .85;
+}
+.footer-api-notes p {
+    margin: 0;
+}
+.footer-api-notes .footer-api-heading {
+    font-weight: bold;
+    opacity: 1;
+    margin-bottom: 5px;
+}
+@media (max-width: 700px) {
+    .footer-api-notes {
+        padding-right: 0;
+        margin-left: 0;
+        text-align: left;
+    }
+}
+
+
+/* ===== CANCEL ORDER MODAL / UX STUDY NOTES =====
+   Reuses .collection-dialog for consistent styling.
+   The destructive action has a separate muted red colour.
+   CSS hover/focus-visible are pseudo-classes for interaction.
+*/
+.cancel-dialog-confirm {
+    background: #943c31;
+    color: white;
+}
+.cancel-dialog-confirm:hover {
+    background: #792d24;
+}
+.cancel-dialog-confirm:focus-visible {
+    outline: 3px solid #b76432;
+    outline-offset: 3px;
+}
+
+
+/* ===== FOOTER API LINK / HTML ANCHOR STUDY NOTES =====
+   An <a href> creates a clickable link.
+   target="_blank" opens JSONBin in a new tab.
+   :hover and :focus-visible give accessible interaction feedback.
+*/
+.footer-api-heading a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+.footer-api-heading a:hover,
+.footer-api-heading a:focus-visible {
+    color: #f3c49c;
+}
+
+
+/* ===== LIVE API STATUS / ASSESSMENT STUDY NOTES =====
+   JavaScript classList changes the status colour.
+   Green = last HTTP request succeeded.
+   Red = last HTTP request failed.
+   The status is event-driven, without extra polling.
+*/
+.footer-api-notes .api-status-ok {
+    color: #b5e4be;
+}
+.footer-api-notes .api-status-error {
+    color: #ffc0b8;
+}
+
+/* ============================================================
+   MODULE 8 - PRODUCT MANAGEMENT
+   Learning note: These styles extend the existing storefront.
+   They do not replace the original ChocoFixCo branding.
+   ============================================================ */
+
+.management-page {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 24px;
+}
+
+.management-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.management-button,
+.management-page button {
+    display: inline-block;
+    padding: 12px 20px;
+    border: 0;
+    border-radius: 8px;
+    background: #593325;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.management-search,
+.management-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin: 24px 0;
+}
+
+.management-form {
+    max-width: 650px;
+    flex-direction: column;
+}
+
+.management-search label,
+.management-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.management-page input,
+.management-page select,
+.management-page textarea {
+    padding: 12px;
+    border: 1px solid #d8bca8;
+    border-radius: 8px;
+    font: inherit;
+}
+
+.management-table-wrap {
+    overflow-x: auto;
+}
+
+.management-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+}
+
+.management-table th,
+.management-table td {
+    padding: 15px;
+    border-bottom: 1px solid #eadbd0;
+    text-align: left;
+}
+
+.management-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* ============================================================
+   MODULE 8 - BACKEND DASHBOARD
+   Learning note:
+   CSS Grid creates a responsive two-column dashboard.
+   ============================================================ */
+
+.backend-dashboard {
+    padding-top: 60px;
+}
+
+.backend-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    margin-top: 36px;
+}
+
+.backend-card {
+    background: #fff;
+    border: 1px solid #e5cdbd;
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 8px 24px rgba(70, 38, 25, 0.05);
+}
+
+.backend-card-icon {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+.backend-card h2 {
+    margin-bottom: 12px;
+}
+
+.backend-card p {
+    margin-bottom: 28px;
+    line-height: 1.6;
+}
+
+.backend-coming-soon {
+    color: #866f62;
+    font-weight: 600;
+}
+
+@media (max-width: 700px) {
+    .backend-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ============================================================
+   MODULE 8 - BACKEND DASHBOARD
+   Learning note:
+   CSS Grid creates a responsive two-column dashboard.
+   ============================================================ */
+
+.backend-dashboard {
+    padding-top: 60px;
+}
+
+.backend-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    margin-top: 36px;
+}
+
+.backend-card {
+    background: #fff;
+    border: 1px solid #e5cdbd;
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 8px 24px rgba(70, 38, 25, 0.05);
+}
+
+.backend-card-icon {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+.backend-card h2 {
+    margin-bottom: 12px;
+}
+
+.backend-card p {
+    margin-bottom: 28px;
+    line-height: 1.6;
+}
+
+.backend-coming-soon {
+    color: #866f62;
+    font-weight: 600;
+}
+
+@media (max-width: 700px) {
+    .backend-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* MODULE 8 STOREFRONT REDESIGN - STEP 31 */
+
+/* Shared brand navigation */
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255, 252, 248, 0.97);
+    border-bottom: 1px solid #ead8c8;
+}
+
+.nav-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 12px 28px;
+    min-height: 82px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.brand img {
+    width: 155px;
+    max-height: 65px;
+    object-fit: contain;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    color: #4a2115;
+}
+
+.nav-links a:last-child {
+    background: #6b2f12;
+    color: white;
+    border-radius: 8px;
+    padding: 12px 18px;
+}
+
+.menu-toggle {
+    display: none;
+}
+
+/* Hero */
+.hero {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 76px 28px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 60px;
+}
+
+.hero-content,
+.hero-visual {
+    min-width: 0;
+}
+
+.hero h1 {
+    font-size: clamp(44px, 5.5vw, 74px);
+    line-height: 1.05;
+    letter-spacing: -2px;
+}
+
+.hero-note {
+    margin-top: 24px;
+    font-size: 13px;
+    color: #80685a;
+}
+
+.hero-visual {
+    min-height: 410px;
+    border-radius: 24px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 20px 50px rgba(74, 33, 21, 0.14);
+}
+
+.hero-visual img {
+    width: 100%;
+    height: 410px;
+    object-fit: cover;
+}
+
+.hero-floating-cta {
+    position: absolute;
+    left: 22px;
+    bottom: 22px;
+    padding: 13px 20px;
+    border-radius: 8px;
+    background: #6b2f12;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Three simple value propositions */
+.shop-benefits {
+    background: #f3e6d8;
+    padding: 30px 24px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    text-align: center;
+}
+
+.shop-benefits div {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.shop-benefits strong {
+    color: #4a2115;
+    font-family: Georgia, serif;
+    font-size: 18px;
+}
+
+.shop-benefits span {
+    color: #80685a;
+    font-size: 14px;
+}
+
+/* Dynamic product cards */
+#chocolates {
+    max-width: 1240px;
+    padding-top: 82px;
+    padding-bottom: 82px;
+}
+
+#chocolates .product-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+}
+
+#chocolates .product-card {
+    min-width: 0;
+    padding: 0;
+    overflow: hidden;
+    border-radius: 16px;
+    background: #fff;
+    border: 1px solid #ead8c8;
+    box-shadow: 0 8px 26px rgba(74, 33, 21, 0.05);
+    display: flex;
+    flex-direction: column;
+}
+
+.shop-product-photo {
+    overflow: hidden;
+    background: #f5eae1;
+}
+
+#chocolates .product-image {
+    display: block;
+    width: 100%;
+    height: 240px;
+    margin: 0;
+    border-radius: 0;
+    object-fit: cover;
+    transition: transform 0.25s ease;
+}
+
+#chocolates .product-card:hover .product-image {
+    transform: scale(1.035);
+}
+
+.shop-product-details {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.shop-product-details h3 {
+    margin: 5px 0 10px;
+    font-size: 23px;
+}
+
+.shop-description {
+    flex: 1;
+    min-height: 48px;
+}
+
+.shop-product-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 18px 0;
+}
+
+.shop-price {
+    font-size: 23px;
+    font-weight: 700;
+    color: #4a2115;
+}
+
+.shop-stock {
+    font-size: 12px;
+    font-weight: 700;
+    color: #376a42;
+}
+
+.shop-stock.sold-out {
+    color: #a13c35;
+}
+
+.shop-product-action {
+    display: block;
+    padding: 13px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 8px;
+    background: #6b2f12;
+    color: white;
+    font-weight: 700;
+}
+
+.shop-product-action:hover {
+    background: #4a2115;
+}
+
+#chocolates .product-gallery {
+    margin-top: 40px;
+}
+
+/* Ordering placeholder: no fake checkout */
+.shop-order-intro {
+    padding: 82px 24px;
+    background: #f4e2d4;
+    text-align: center;
+}
+
+.shop-order-intro-inner {
+    max-width: 680px;
+    margin: 0 auto;
+}
+
+.shop-order-intro h2 {
+    font-size: clamp(30px, 4vw, 44px);
+    color: #4a2115;
+}
+
+.shop-order-intro p {
+    line-height: 1.8;
+}
+
+.shop-order-status {
+    display: inline-block;
+    margin-top: 18px;
+    padding: 12px 20px;
+    border: 1px solid #c9a48d;
+    border-radius: 8px;
+    font-weight: 700;
+    color: #6b2f12;
+}
+
+/* Shared footer */
+.site-footer {
+    padding: 35px 28px;
+    background: #4a2115;
+    color: white;
+}
+
+.site-footer .footer-container {
+    max-width: 1240px;
+    margin: 0 auto;
+}
+
+.site-footer .footer-brand img {
+    width: 56px;
+    height: 56px;
+    object-fit: contain;
+}
+
+/* Responsive layout */
+@media (max-width: 900px) {
+    .hero {
+        gap: 32px;
+    }
+
+    #chocolates .product-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 700px) {
+    .nav-container {
+        flex-wrap: wrap;
+        padding: 12px 18px;
+    }
+
+    .menu-toggle {
+        display: block;
+        border: 0;
+        background: transparent;
+        color: #6b2f12;
+        font-size: 28px;
+        cursor: pointer;
+    }
+
+    .nav-links {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+    }
+
+    .nav-links.open {
+        display: flex;
+    }
+
+    .nav-links a {
+        padding: 12px 4px;
+    }
+
+    .nav-links a:last-child {
+        text-align: center;
+        margin-top: 8px;
+    }
+
+    .hero {
+        grid-template-columns: 1fr;
+        padding: 48px 20px;
+    }
+
+    .hero-visual {
+        width: 100%;
+        min-height: 300px;
+    }
+
+    .hero-visual img {
+        height: 300px;
+    }
+
+    .shop-benefits {
+        grid-template-columns: 1fr;
+        gap: 26px;
+    }
+
+    #chocolates .product-grid {
+        grid-template-columns: 1fr;
+    }
+
+    #chocolates .product-image {
+        height: 260px;
+    }
+
+    #chocolates .product-gallery {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .site-footer .footer-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+
+/* MODULE 8 BOUTIQUE UI - STEP 36 */
+
+/*
+ * DESIGN SYSTEM
+ *
+ * Cream:        #fbf7f0
+ * Chocolate:    #382018
+ * Deep brown:   #26140f
+ * Caramel:      #aa7652
+ * Soft border:  #e9ded2
+ *
+ * Typography:
+ * Georgia for editorial headings.
+ * Arial for readable interface text.
+ */
+
+.boutique-storefront {
+    background: #fbf7f0;
+    color: #382018;
+}
+
+.boutique-storefront * {
+    box-sizing: border-box;
+}
+
+/* HEADER */
+.site-header {
+    background: #fbf7f0;
+    border-bottom: 1px solid #e9ded2;
+}
+
+.nav-container {
+    max-width: 1440px;
+    padding: 14px 5%;
+    min-height: 88px;
+}
+
+.nav-links a {
+    font-size: 13px;
+    letter-spacing: 0.3px;
+}
+
+.nav-links a:last-child {
+    background: #382018;
+    border-radius: 3px;
+    padding: 12px 20px;
+    color: #fff;
+}
+
+/* HERO */
+.boutique-hero {
+    max-width: 1440px;
+    margin: auto;
+    min-height: 640px;
+    display: grid;
+    grid-template-columns: 0.95fr 1.05fr;
+}
+
+.boutique-hero-copy {
+    padding: 90px 8% 70px 10%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.boutique-kicker,
+.boutique-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2.6px;
+    color: #aa7652;
+}
+
+.boutique-kicker {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.kicker-line {
+    width: 28px;
+    height: 1px;
+    background: #aa7652;
+}
+
+.boutique-hero h1 {
+    font-family: Georgia, serif;
+    font-size: clamp(46px, 5vw, 76px);
+    line-height: 1.08;
+    letter-spacing: -2px;
+    font-weight: 400;
+    margin: 30px 0;
+}
+
+.boutique-hero h1 em,
+.boutique-section-top h2 em,
+.boutique-story h2 em,
+.boutique-gallery-heading h2 em {
+    color: #a16c4a;
+    font-weight: 400;
+}
+
+.boutique-hero-copy > p {
+    font-size: 16px;
+    line-height: 1.9;
+    max-width: 430px;
+    color: #79675d;
+}
+
+.boutique-hero-actions {
+    margin-top: 30px;
+}
+
+.boutique-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 38px;
+    background: #382018;
+    color: white;
+    padding: 18px 24px;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    border-radius: 3px;
+}
+
+.boutique-button:hover {
+    background: #5b3425;
+}
+
+.boutique-hero-footnote {
+    margin-top: 76px;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #a18b7e;
+}
+
+.boutique-hero-photo {
+    position: relative;
+    min-height: 640px;
+    overflow: hidden;
+    background: #eadbd0;
+}
+
+.boutique-hero-photo > img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+    object-fit: cover;
+}
+
+.boutique-photo-caption {
+    position: absolute;
+    left: 28px;
+    right: 28px;
+    bottom: 25px;
+    display: flex;
+    justify-content: space-between;
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    text-shadow: 0 1px 5px #382018;
+}
+
+/* BRAND STRIP */
+.boutique-intro-strip {
+    padding: 24px;
+    background: #382018;
+    color: #f7e9dc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 38px;
+    flex-wrap: wrap;
+    font-size: 10px;
+    letter-spacing: 2px;
+}
+
+.boutique-intro-divider {
+    color: #caa07e;
+}
+
+/* COLLECTION */
+.boutique-collection {
+    max-width: 1350px;
+    margin: 0 auto;
+    padding: 100px 5%;
+}
+
+.boutique-section-top {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 40px;
+    margin-bottom: 46px;
+}
+
+.boutique-section-top h2,
+.boutique-gallery-heading h2 {
+    font-size: clamp(36px, 4vw, 54px);
+    font-weight: 400;
+    letter-spacing: -1px;
+    margin: 14px 0 0;
+}
+
+.boutique-section-top > p {
+    max-width: 340px;
+    font-size: 14px;
+    line-height: 1.8;
+    color: #79675d;
+}
+
+.boutique-product-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 34px 24px;
+}
+
+.boutique-product-card {
+    min-width: 0;
+}
+
+.boutique-product-image-wrap {
+    position: relative;
+    aspect-ratio: 1 / 0.83;
+    background: #eee3d9;
+    overflow: hidden;
+}
+
+.boutique-product-image-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.boutique-product-card:hover img {
+    transform: scale(1.035);
+}
+
+.boutique-product-number {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: #fbf7f0;
+    padding: 8px 11px;
+    font-size: 11px;
+    color: #382018;
+}
+
+.boutique-product-info {
+    padding: 20px 2px;
+}
+
+.boutique-product-title-row {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+.boutique-product-title-row h3 {
+    font-size: 21px;
+    font-weight: 400;
+    margin: 0;
+}
+
+.boutique-product-title-row strong {
+    white-space: nowrap;
+    font-size: 16px;
+}
+
+.boutique-product-info > p {
+    font-size: 13px;
+    line-height: 1.7;
+    color: #79675d;
+    min-height: 45px;
+}
+
+.boutique-product-meta {
+    border-top: 1px solid #e9ded2;
+    padding-top: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 11px;
+}
+
+.boutique-available {
+    color: #48774f;
+}
+
+.stock-dot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #48774f;
+    margin-right: 5px;
+}
+
+.boutique-unavailable {
+    color: #a33f37;
+}
+
+.boutique-order-pending {
+    color: #947d6f;
+}
+
+.boutique-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px;
+}
+
+/* STORY */
+.boutique-story {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 540px;
+    background: #efe2d5;
+}
+
+.boutique-story-image {
+    min-height: 540px;
+    overflow: hidden;
+}
+
+.boutique-story-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.boutique-story-content {
+    padding: 80px 12%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.boutique-story h2 {
+    font-size: clamp(34px, 3.5vw, 52px);
+    font-weight: 400;
+    line-height: 1.2;
+}
+
+.boutique-story-content > p:not(.boutique-label) {
+    line-height: 1.9;
+    color: #79675d;
+    max-width: 440px;
+}
+
+.boutique-text-link {
+    margin-top: 22px;
+    display: inline-flex;
+    gap: 25px;
+    color: #382018;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+/* GALLERY */
+.boutique-gallery-section {
+    padding: 95px 5%;
+    max-width: 1440px;
+    margin: auto;
+}
+
+.boutique-gallery-heading {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.boutique-gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.boutique-gallery-grid img {
+    width: 100%;
+    aspect-ratio: 0.82;
+    object-fit: cover;
+}
+
+/* FOOTER */
+.site-footer {
+    background: #26140f;
+    padding: 45px 5% 20px;
+}
+
+.site-footer .footer-container {
+    max-width: 1280px;
+    margin: auto;
+}
+
+.footer-links {
+    display: flex;
+    gap: 25px;
+}
+
+.footer-links a {
+    color: #f0ddcc;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.footer-copyright {
+    text-align: center;
+    padding-top: 35px;
+    font-size: 11px;
+    color: #bfa89b;
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 900px) {
+    .boutique-hero {
+        grid-template-columns: 1fr 1fr;
+        min-height: 500px;
+    }
+
+    .boutique-hero-copy {
+        padding: 55px 7%;
+    }
+
+    .boutique-hero-photo {
+        min-height: 500px;
+    }
+
+    .boutique-product-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .boutique-story-content {
+        padding: 50px 8%;
+    }
+}
+
+@media (max-width: 700px) {
+    .boutique-hero {
+        grid-template-columns: 1fr;
+    }
+
+    .boutique-hero-copy {
+        padding: 65px 7% 45px;
+    }
+
+    .boutique-hero h1 {
+        font-size: 48px;
+    }
+
+    .boutique-hero-footnote {
+        margin-top: 40px;
+    }
+
+    .boutique-hero-photo {
+        min-height: 360px;
+    }
+
+    .boutique-intro-strip {
+        gap: 12px;
+        font-size: 9px;
+        text-align: center;
+    }
+
+    .boutique-intro-divider {
+        display: none;
+    }
+
+    .boutique-section-top {
+        display: block;
+    }
+
+    .boutique-collection {
+        padding: 65px 6%;
+    }
+
+    .boutique-product-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .boutique-product-image-wrap {
+        aspect-ratio: 1 / 0.78;
+    }
+
+    .boutique-story {
+        grid-template-columns: 1fr;
+    }
+
+    .boutique-story-image {
+        min-height: 330px;
+        max-height: 400px;
+    }
+
+    .boutique-story-content {
+        padding: 60px 7%;
+    }
+
+    .boutique-gallery-section {
+        padding: 65px 6%;
+    }
+
+    .boutique-gallery-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .footer-links {
+        flex-wrap: wrap;
+    }
+}
+
+
+/* MODULE 8 ORDERING - STEP 39 */
+
+.boutique-order-button {
+    color: #6b2f12;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.boutique-order-button:hover {
+    text-decoration: underline;
+}
+
+.order-checkout,
+.order-confirmation {
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 80px 24px;
+    color: #382018;
+}
+
+.checkout-heading {
+    text-align: center;
+    margin-bottom: 45px;
+}
+
+.checkout-heading h1,
+.order-confirmation h1 {
+    font-family: Georgia, serif;
+    font-size: clamp(34px, 4vw, 52px);
+    font-weight: 400;
+}
+
+.checkout-layout {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 50px;
+}
+
+.checkout-product img {
+    width: 100%;
+    max-height: 390px;
+    object-fit: cover;
+}
+
+.checkout-product h2 {
+    margin-top: 24px;
+}
+
+.checkout-form,
+.confirmation-details {
+    padding: 34px;
+    background: white;
+    border: 1px solid #e9ded2;
+    border-radius: 8px;
+}
+
+.checkout-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.checkout-form label {
+    margin-top: 18px;
+}
+
+.checkout-form input {
+    padding: 13px;
+}
+
+.checkout-total {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+    padding: 20px 0;
+    border-top: 1px solid #e9ded2;
+    font-size: 19px;
+}
+
+.checkout-submit {
+    padding: 16px;
+    border: 0;
+    border-radius: 4px;
+    background: #382018;
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.checkout-note {
+    font-size: 12px;
+    line-height: 1.6;
+    color: #80685a;
+}
+
+.order-confirmation {
+    max-width: 700px;
+    text-align: center;
+}
+
+.confirmation-details {
+    text-align: left;
+    margin: 35px 0;
+}
+
+@media (max-width: 700px) {
+    .checkout-layout {
+        grid-template-columns: 1fr;
+        gap: 28px;
+    }
+
+    .checkout-form,
+    .confirmation-details {
+        padding: 22px;
+    }
+}
+
+
+/* MODULE 8 ORDER CTA - STEP 40 */
+
+.boutique-product-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+}
+
+.boutique-order-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 15px 19px;
+    background: #382018;
+    color: #ffffff;
+    border: 1px solid #382018;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    text-decoration: none;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.boutique-order-button:hover {
+    background: #6b2f12;
+    color: #ffffff;
+    text-decoration: none;
+    transform: translateY(-2px);
+}
+
+.boutique-order-button span {
+    font-size: 20px;
+    line-height: 1;
+}
+
+/* ============================================================
+   MODULE 8 - STEP 41: PREMIUM PRODUCT CALL TO ACTION
+
+   LEARNING NOTES:
+   - CSS controls how HTML elements look.
+   - We keep the existing EJS order link and Express route.
+   - This changes presentation only, not database behaviour.
+   - The more specific selectors override the previous
+     full-width button styling without changing Backend pages.
+   ============================================================ */
+
+.boutique-storefront .boutique-product-meta {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-top: 19px;
+}
+
+.boutique-storefront .boutique-order-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 15px;
+
+    width: auto;
+    padding: 5px 0 6px;
+
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #a47a60;
+    border-radius: 0;
+
+    color: #382018;
+    font-family: Georgia, serif;
+    font-size: 15px;
+    font-weight: 400;
+    letter-spacing: 0;
+
+    text-decoration: none;
+    box-shadow: none;
+    transform: none;
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.boutique-storefront .boutique-order-button span {
+    font-family: Arial, sans-serif;
+    font-size: 17px;
+    font-weight: 400;
+}
+
+.boutique-storefront .boutique-order-button:hover {
+    background: transparent;
+    color: #a16c4a;
+    border-bottom-color: #a16c4a;
+    text-decoration: none;
+    transform: none;
+}
+
+.boutique-storefront .boutique-order-button:focus-visible {
+    outline: 2px solid #a16c4a;
+    outline-offset: 5px;
+}
+
+@media (max-width: 700px) {
+    .boutique-storefront .boutique-product-meta {
+        flex-direction: row;
+        align-items: center;
+    }
+}
+
+
+/* MODULE 8 RESPONSIVE REFINEMENT - STEP 42 */
+
+/* Keep the major storefront sections aligned. */
+.boutique-storefront {
+    width: 100%;
+    max-width: none;
+    overflow-x: clip;
+}
+
+.boutique-hero {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+}
+
+.boutique-collection,
+.boutique-gallery-section {
+    width: min(100%, 1440px);
+    max-width: 1440px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Remove unused decorative elements. */
+.boutique-intro-strip,
+.boutique-photo-caption {
+    display: none;
+}
+
+/* Keep product cards within their grid columns. */
+.boutique-product-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.boutique-product-card,
+.boutique-product-info {
+    min-width: 0;
+}
+
+/* Prevent very wide story photographs from dominating. */
+.boutique-story {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    min-height: 480px;
+}
+
+.boutique-story-image {
+    min-height: 480px;
+    max-height: 540px;
+}
+
+.boutique-story-image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.boutique-story-content {
+    min-width: 0;
+    padding: 60px clamp(28px, 5vw, 80px);
+}
+
+/* Keep gallery images consistently sized. */
+.boutique-gallery-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.boutique-gallery-grid img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+}
+
+/*
+ * scroll-margin-top prevents the sticky navigation
+ * from covering section headings when clicking anchors.
+ */
+#collection,
+#our-story {
+    scroll-margin-top: 110px;
+}
+
+@media (max-width: 900px) {
+    .boutique-product-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .boutique-story {
+        min-height: 400px;
+    }
+
+    .boutique-story-image {
+        min-height: 400px;
+    }
+}
+
+@media (max-width: 700px) {
+    .boutique-hero,
+    .boutique-story {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .boutique-product-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .boutique-story-image {
+        min-height: 300px;
+        max-height: 380px;
+    }
+
+    .boutique-gallery-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .boutique-collection,
+    .boutique-gallery-section {
+        padding-left: 6%;
+        padding-right: 6%;
+    }
+}
+
+/* ============================================================
+   MODULE 8 - STEP 43
+   CHOCOFIXCO STOREFRONT TYPOGRAPHY & ALIGNMENT
+
+   LEARNING NOTES:
+   - CSS controls spacing, typography and visual hierarchy.
+   - clamp() creates fluid font sizes across screen widths.
+   - Grid and Flexbox align elements without fixed positions.
+   - min-width: 0 allows grid children to shrink correctly.
+   - Media queries adapt layouts for smaller screens.
+   - These rules do not change Express, EJS or MariaDB.
+   ============================================================ */
+
+/* Consistent typography across the storefront */
+.boutique-storefront {
+    color: #382018;
+    line-height: 1.6;
+}
+
+.boutique-storefront h1,
+.boutique-storefront h2,
+.boutique-storefront h3 {
+    line-height: 1.12;
+    letter-spacing: -0.025em;
+}
+
+.boutique-storefront p {
+    line-height: 1.7;
+}
+
+/* HERO: align text and photograph */
+.boutique-hero {
+    align-items: center;
+}
+
+.boutique-hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    min-width: 0;
+}
+
+.boutique-hero-content h1 {
+    font-size: clamp(42px, 4.2vw, 76px);
+    line-height: 1.06;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.boutique-hero-content > p {
+    max-width: 420px;
+}
+
+.boutique-hero-content .boutique-button {
+    margin-top: 28px;
+}
+
+/* COLLECTION: balance heading and introductory paragraph */
+.boutique-collection {
+    box-sizing: border-box;
+}
+
+.boutique-collection-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 0.8fr);
+    align-items: end;
+    gap: 40px;
+    margin-bottom: 38px;
+}
+
+.boutique-collection-heading h2 {
+    font-size: clamp(34px, 3.2vw, 56px);
+    line-height: 1.12;
+    max-width: 750px;
+}
+
+.boutique-collection-heading p {
+    max-width: 320px;
+    margin: 0 0 5px;
+}
+
+/* PRODUCT CARDS: consistent alignment */
+.boutique-product-grid {
+    align-items: stretch;
+    gap: 34px 24px;
+}
+
+.boutique-product-card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.boutique-product-card img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1.22 / 1;
+    object-fit: cover;
+}
+
+.boutique-product-info {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.boutique-product-info h3 {
+    font-size: clamp(20px, 1.5vw, 26px);
+}
+
+.boutique-product-info p {
+    font-size: 14px;
+}
+
+.boutique-product-meta {
+    margin-top: auto;
+}
+
+/* STORY: keep text vertically centred */
+.boutique-story {
+    align-items: stretch;
+}
+
+.boutique-story-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.boutique-story-content h2 {
+    font-size: clamp(34px, 3vw, 54px);
+    line-height: 1.14;
+    margin-bottom: 24px;
+}
+
+.boutique-story-content p {
+    max-width: 430px;
+}
+
+/* GALLERY: consistent headings and image spacing */
+.boutique-gallery-section {
+    text-align: center;
+}
+
+.boutique-gallery-section h2 {
+    font-size: clamp(32px, 2.8vw, 48px);
+    line-height: 1.15;
+    margin-bottom: 28px;
+}
+
+/* RESPONSIVE REFINEMENT */
+@media (max-width: 900px) {
+    .boutique-collection-heading {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .boutique-collection-heading p {
+        max-width: 560px;
+    }
+}
+
+@media (max-width: 700px) {
+    .boutique-hero-content {
+        padding-top: 36px;
+        padding-bottom: 36px;
+    }
+
+    .boutique-hero-content h1 {
+        font-size: clamp(38px, 9vw, 54px);
+    }
+
+    .boutique-collection-heading h2 {
+        font-size: clamp(32px, 8vw, 44px);
+    }
+
+    .boutique-product-grid {
+        gap: 36px;
+    }
+
+    .boutique-story-content {
+        padding: 42px 26px;
+    }
+}
+
+/* ============================================================
+   MODULE 8 - STEP 44: STOREFRONT SECTION SPACING
+
+   LEARNING NOTES:
+   - padding creates space inside a section.
+   - margin creates space outside an element.
+   - Excessive spacing can result from both being applied.
+   - These rules target only the customer storefront.
+   - Backend pages and database operations are unaffected.
+   ============================================================ */
+
+/* Remove unnecessary minimum heights and excessive margins. */
+.boutique-storefront .boutique-hero {
+    min-height: 0;
+    margin-bottom: 0;
+}
+
+.boutique-storefront .boutique-collection {
+    min-height: 0;
+    padding-top: 64px;
+    padding-bottom: 76px;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.boutique-storefront .boutique-collection-heading {
+    margin-top: 0;
+    margin-bottom: 32px;
+}
+
+.boutique-storefront .boutique-story {
+    min-height: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.boutique-storefront .boutique-gallery-section {
+    min-height: 0;
+    padding-top: 64px;
+    padding-bottom: 72px;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+/* Keep spacing balanced on mobile. */
+@media (max-width: 700px) {
+    .boutique-storefront .boutique-collection {
+        padding-top: 40px;
+        padding-bottom: 48px;
+    }
+
+    .boutique-storefront .boutique-gallery-section {
+        padding-top: 40px;
+        padding-bottom: 48px;
+    }
+}
+
+
+/* MODULE 8 ORDER MANAGEMENT - STEP 45 */
+
+.order-management-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 55px 24px 90px;
+}
+
+.order-summary-grid,
+.order-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    margin: 30px 0;
+}
+
+.order-detail-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.order-summary-card,
+.order-detail-card {
+    padding: 26px;
+    background: #fff;
+    border: 1px solid #e7dacf;
+    border-radius: 8px;
+}
+
+.order-summary-card span {
+    display: block;
+    margin-bottom: 12px;
+    color: #80685a;
+}
+
+.order-summary-card strong {
+    font-size: 28px;
+    color: #382018;
+}
+
+.order-search-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: 16px;
+    margin: 30px 0;
+}
+
+.order-search-form label,
+.order-update-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.order-search-form input,
+.order-search-form select,
+.order-update-form select {
+    min-height: 43px;
+    padding: 10px 12px;
+    border: 1px solid #d7c8ba;
+    border-radius: 4px;
+    background: white;
+}
+
+.order-table-scroll {
+    overflow-x: auto;
+}
+
+.order-management-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+}
+
+.order-management-table th,
+.order-management-table td {
+    padding: 16px;
+    border-bottom: 1px solid #e7dacf;
+    text-align: left;
+    vertical-align: top;
+}
+
+.order-management-table th {
+    background: #f0e8df;
+}
+
+.order-management-table small {
+    display: block;
+    margin-top: 4px;
+    color: #80685a;
+}
+
+.order-detail-card {
+    margin-bottom: 24px;
+}
+
+.order-line-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid #e7dacf;
+}
+
+.order-update-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.order-update-form select {
+    width: min(100%, 360px);
+}
+
+.order-update-note {
+    max-width: 550px;
+    color: #80685a;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+@media (max-width: 700px) {
+    .order-summary-grid,
+    .order-detail-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .order-search-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .order-management-page {
+        padding: 35px 16px 60px;
+    }
+}
+
+
+/* MODULE 8 PRODUCT IMAGE UPLOAD - STEP 47 */
+
+.product-editor-page {
+    max-width: 950px;
+    margin: 0 auto;
+    padding: 50px 24px 80px;
+}
+
+.product-upload-form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    max-width: 760px;
+}
+
+.product-upload-form > label {
+    margin-top: 12px;
+    font-weight: 600;
+}
+
+.product-upload-form > input,
+.product-upload-form > textarea,
+.product-upload-form > select {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    border: 1px solid #d8c8b8;
+    border-radius: 5px;
+    background: #fff;
+    font: inherit;
+}
+
+.product-upload-form h2 {
+    margin: 30px 0 5px;
+    font-family: Georgia, serif;
+}
+
+.product-dropzone {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 205px;
+    padding: 30px;
+    border: 2px dashed #b99b83;
+    border-radius: 9px;
+    background: #faf6f0;
+    color: #382018;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.product-dropzone:hover,
+.product-dropzone.dragging {
+    background: #f0e5d8;
+    border-color: #6b2f12;
+}
+
+.product-dropzone:focus-visible {
+    outline: 3px solid #a47a60;
+    outline-offset: 3px;
+}
+
+.product-file-input {
+    display: none;
+}
+
+.dropzone-content {
+    pointer-events: none;
+}
+
+.dropzone-content strong,
+.dropzone-content small {
+    display: block;
+}
+
+.dropzone-content p {
+    margin: 8px 0;
+}
+
+.dropzone-icon {
+    display: block;
+    margin-bottom: 12px;
+    font-size: 32px;
+}
+
+.product-image-preview img,
+.product-existing-image img {
+    display: block;
+    max-width: 240px;
+    max-height: 220px;
+    object-fit: contain;
+    border-radius: 6px;
+}
+
+.product-image-preview button {
+    margin-top: 10px;
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+.product-upload-divider,
+.product-upload-note {
+    color: #80685a;
+    font-size: 13px;
+}
+
+.product-upload-divider {
+    text-align: center;
+    margin: 20px 0 8px;
+}
+
+.product-upload-form > .management-button {
+    align-self: flex-start;
+    margin-top: 18px;
+}
+
+@media (max-width: 700px) {
+    .product-editor-page {
+        padding: 30px 16px 60px;
+    }
+
+    .product-dropzone {
+        min-height: 160px;
+        padding: 18px;
+    }
+}
+
+
+/* CHOCOFIXCO DELETE CONFIRMATION UI - STEP 51 */
+
+/*
+ * LEARNING NOTE:
+ * We use CSS classes to distinguish destructive actions.
+ * Red communicates danger, while brown remains the
+ * primary ChocoFixCo brand colour.
+ */
+
+.chocofix-delete-page {
+    max-width: 760px;
+    margin: 55px auto 90px;
+    padding: 0 24px;
+}
+
+.chocofix-delete-card {
+    background: #fff;
+    border: 1px solid #eadbd1;
+    border-radius: 14px;
+    padding: 38px;
+    box-shadow: 0 12px 35px rgba(58, 29, 19, 0.06);
+}
+
+.chocofix-delete-warning {
+    display: inline-block;
+    background: #fff0ed;
+    color: #a52722;
+    border-radius: 6px;
+    padding: 9px 13px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.chocofix-delete-card h1 {
+    margin: 0 0 18px;
+    color: #382018;
+}
+
+.chocofix-delete-card p {
+    line-height: 1.7;
+}
+
+.chocofix-delete-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+}
+
+.chocofix-delete-button {
+    background: #bd3029;
+    color: #fff;
+    border: 1px solid #bd3029;
+    border-radius: 7px;
+    padding: 13px 22px;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.chocofix-delete-button:hover {
+    background: #97221d;
+    border-color: #97221d;
+}
+
+.chocofix-cancel-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 13px 22px;
+    border: 1px solid #cbb6a7;
+    border-radius: 7px;
+    background: #fff;
+    color: #382018;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.chocofix-cancel-button:hover {
+    background: #f8f0e8;
+}
+
+@media (max-width: 600px) {
+    .chocofix-delete-page {
+        margin: 25px auto 55px;
+    }
+
+    .chocofix-delete-card {
+        padding: 24px;
+    }
+}
+
+
+/* CHOCOFIXCO PRODUCT MANAGEMENT - STEP 51B */
+
+.cf-products-admin {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 48px 28px 90px;
+    color: #38231b;
+}
+
+.cf-admin-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 28px;
+}
+
+.cf-admin-eyebrow {
+    color: #b85b2d;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.cf-admin-header h1 {
+    margin: 8px 0;
+    font-family: Georgia, serif;
+    font-size: clamp(30px, 3vw, 42px);
+}
+
+.cf-admin-header p {
+    margin: 0;
+}
+
+.cf-primary-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 7px;
+    background: #593527;
+    color: white;
+    text-decoration: none;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.cf-primary-button:hover {
+    background: #3b2119;
+    color: white;
+}
+
+.cf-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+.cf-stat {
+    padding: 20px;
+    border: 1px solid #e8d9ca;
+    border-radius: 10px;
+    background: white;
+}
+
+.cf-stat span {
+    display: block;
+    color: #82695c;
+    font-size: 13px;
+}
+
+.cf-stat strong {
+    display: block;
+    margin-top: 8px;
+    font-size: 29px;
+}
+
+.cf-filter-panel {
+    padding: 24px;
+    background: white;
+    border: 1px solid #e8d9ca;
+    border-radius: 12px;
+    margin-bottom: 28px;
+}
+
+.cf-panel-title h2,
+.cf-results-header h2 {
+    margin: 0 0 5px;
+    font-family: Georgia, serif;
+    font-size: 23px;
+}
+
+.cf-panel-title p,
+.cf-results-header p {
+    margin: 0 0 18px;
+    color: #80685c;
+    font-size: 14px;
+}
+
+.cf-filter-form {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    align-items: end;
+}
+
+.cf-filter-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.cf-filter-form input,
+.cf-filter-form select {
+    box-sizing: border-box;
+    width: 100%;
+    height: 43px;
+    padding: 9px 12px;
+    border: 1px solid #d8c6b9;
+    border-radius: 6px;
+    background: #fff;
+    color: #38231b;
+    font: inherit;
+    font-weight: 400;
+}
+
+.cf-filter-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.cf-reset-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 0 15px;
+    border: 1px solid #d4bfb0;
+    border-radius: 7px;
+    color: #593527;
+    background: white;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.cf-reset-button:hover {
+    background: #f8f0e9;
+}
+
+.cf-results-header {
+    margin-bottom: 14px;
+}
+
+.cf-results-header p {
+    margin-bottom: 0;
+}
+
+.cf-table-wrap {
+    overflow-x: auto;
+    background: white;
+    border: 1px solid #e8d9ca;
+    border-radius: 10px;
+}
+
+.cf-products-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 14px;
+}
+
+.cf-products-table th {
+    padding: 16px;
+    background: #f7efe8;
+    color: #58372a;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.cf-products-table th a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.cf-products-table th a:hover {
+    text-decoration: underline;
+}
+
+.cf-products-table th a span {
+    margin-left: 4px;
+    color: #a17b64;
+}
+
+.cf-products-table td {
+    padding: 13px 16px;
+    border-top: 1px solid #eee3d9;
+    vertical-align: middle;
+}
+
+.cf-products-table tbody tr:hover {
+    background: #fdf9f5;
+}
+
+.cf-product-id {
+    color: #927b6e;
+}
+
+.cf-product-cell {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    min-width: 220px;
+}
+
+.cf-product-thumb {
+    width: 56px;
+    height: 56px;
+    flex-shrink: 0;
+    object-fit: cover;
+    border-radius: 8px;
+    background: #f3e8df;
+}
+
+.cf-no-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.cf-product-info strong,
+.cf-product-info small {
+    display: block;
+}
+
+.cf-product-info small {
+    margin-top: 4px;
+    color: #988174;
+    font-size: 11px;
+}
+
+.cf-price {
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.cf-stock-normal {
+    color: #38231b;
+    font-weight: 700;
+}
+
+.cf-stock-low {
+    color: #a56713;
+    font-weight: 700;
+}
+
+.cf-stock-out {
+    color: #b52b25;
+    font-weight: 700;
+}
+
+.cf-status {
+    display: inline-block;
+    padding: 6px 11px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.cf-status-active {
+    background: #e6f2e8;
+    color: #28683c;
+}
+
+.cf-status-inactive {
+    background: #f0ece9;
+    color: #75675f;
+}
+
+.cf-row-actions {
+    display: flex;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.cf-edit-action,
+.cf-delete-action {
+    padding: 8px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.cf-edit-action {
+    color: #593527;
+    border: 1px solid #d4bfb0;
+}
+
+.cf-edit-action:hover {
+    background: #f5e9de;
+}
+
+.cf-delete-action {
+    color: #b52b25;
+    border: 1px solid #edc2bf;
+    background: #fff7f6;
+}
+
+.cf-delete-action:hover {
+    background: #fce7e5;
+}
+
+.cf-empty-results {
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.cf-empty-results h3 {
+    font-family: Georgia, serif;
+}
+
+@media (max-width: 900px) {
+    .cf-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .cf-filter-form {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .cf-products-admin {
+        padding: 28px 14px 60px;
+    }
+
+    .cf-admin-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .cf-stats,
+    .cf-filter-form {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* CHOCOFIXCO DELETE MODAL - STEP 52D */
+
+.cf-delete-action {
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.cf-delete-dialog {
+    width: min(480px, calc(100% - 32px));
+    max-width: 480px;
+    padding: 0;
+    border: 1px solid #ead8ce;
+    border-radius: 14px;
+    box-shadow: 0 24px 80px rgba(30, 15, 10, 0.25);
+    color: #38231b;
+}
+
+.cf-delete-dialog::backdrop {
+    background: rgba(28, 15, 10, 0.55);
+}
+
+.cf-modal-content {
+    padding: 32px;
+}
+
+.cf-modal-warning {
+    display: inline-block;
+    padding: 8px 12px;
+    border-radius: 6px;
+    background: #fff0ed;
+    color: #ae2822;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.cf-modal-content h2 {
+    margin: 20px 0 15px;
+    font-family: Georgia, serif;
+    font-size: 28px;
+}
+
+.cf-modal-content p {
+    line-height: 1.6;
+}
+
+.cf-modal-note {
+    color: #a42b25;
+    font-size: 14px;
+}
+
+.cf-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 28px;
+}
+
+.cf-modal-cancel,
+.cf-modal-delete {
+    padding: 12px 17px;
+    border-radius: 7px;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.cf-modal-cancel {
+    border: 1px solid #d2bdb0;
+    background: #fff;
+    color: #38231b;
+}
+
+.cf-modal-delete {
+    border: 1px solid #bc3029;
+    background: #bc3029;
+    color: #fff;
+}
+
+.cf-modal-delete:hover {
+    background: #97241e;
+}
+
+@media (max-width: 600px) {
+    .cf-modal-content {
+        padding: 24px;
+    }
+}
+
+
+/* CHOCOFIXCO ORDER DETAIL - STEP 55 */
+
+.cf-order-detail {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 42px 24px 90px;
+    color: #38231b;
+}
+
+.cf-order-back {
+    display: inline-block;
+    margin-bottom: 26px;
+    color: #593527;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.cf-order-back:hover {
+    text-decoration: underline;
+}
+
+.cf-order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 28px;
+}
+
+.cf-order-header h1 {
+    margin: 8px 0;
+    font-family: Georgia, serif;
+    font-size: clamp(32px, 4vw, 46px);
+}
+
+.cf-order-header p {
+    margin: 0;
+    color: #80685c;
+}
+
+.cf-order-header-status {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.cf-order-status-badge,
+.cf-order-payment-badge {
+    padding: 9px 14px;
+    border-radius: 25px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.cf-order-progress {
+    background: #fff0d6;
+    color: #92600d;
+}
+
+.cf-order-completed {
+    background: #e6f2e8;
+    color: #28683c;
+}
+
+.cf-order-cancelled {
+    background: #fde8e6;
+    color: #a72b25;
+}
+
+.cf-order-payment-badge {
+    background: #eee8e3;
+    color: #654d40;
+}
+
+.cf-order-info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+    margin-bottom: 22px;
+}
+
+.cf-order-card {
+    padding: 28px;
+    background: #fff;
+    border: 1px solid #e8d9ca;
+    border-radius: 12px;
+    margin-bottom: 22px;
+}
+
+.cf-order-info-grid .cf-order-card {
+    margin-bottom: 0;
+}
+
+.cf-order-card h2 {
+    margin: 0 0 22px;
+    font-family: Georgia, serif;
+    font-size: 23px;
+}
+
+.cf-order-info-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 13px 0;
+    border-bottom: 1px solid #f0e8e1;
+}
+
+.cf-order-info-row:last-child {
+    border-bottom: none;
+}
+
+.cf-order-info-row span {
+    color: #826c60;
+}
+
+.cf-order-info-row strong {
+    text-align: right;
+    overflow-wrap: anywhere;
+}
+
+.cf-order-total-row strong {
+    font-size: 22px;
+    color: #593527;
+}
+
+.cf-order-products-header,
+.cf-order-product-row {
+    display: grid;
+    grid-template-columns: 2fr 0.7fr 1fr 1fr;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 0;
+}
+
+.cf-order-products-header {
+    border-bottom: 1px solid #e8d9ca;
+    color: #80685c;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.cf-order-product-row {
+    border-bottom: 1px solid #f0e8e1;
+}
+
+.cf-order-products-total {
+    display: flex;
+    justify-content: flex-end;
+    gap: 30px;
+    padding-top: 20px;
+    font-size: 17px;
+}
+
+.cf-order-products-total strong {
+    color: #593527;
+    font-size: 22px;
+}
+
+.cf-order-update-heading p {
+    margin-top: -12px;
+    color: #80685c;
+}
+
+.cf-order-update-fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    margin-top: 25px;
+}
+
+.cf-order-update-fields label {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-weight: 700;
+}
+
+.cf-order-update-fields select {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #d8c6b9;
+    border-radius: 7px;
+    background: white;
+    color: #38231b;
+    font: inherit;
+}
+
+.cf-order-notice {
+    padding: 15px;
+    background: #f5f0e9;
+    border-left: 4px solid #a47d62;
+    border-radius: 5px;
+    line-height: 1.6;
+}
+
+.cf-order-danger-notice {
+    margin-top: 22px;
+    padding: 17px;
+    border: 1px solid #eab6b1;
+    border-radius: 8px;
+    background: #fff0ee;
+    color: #a52722;
+}
+
+.cf-order-danger-notice[hidden] {
+    display: none;
+}
+
+.cf-order-danger-notice p {
+    margin-bottom: 0;
+}
+
+.cf-order-help-text {
+    margin-top: 22px;
+    color: #80685c;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.cf-order-save-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+@media (max-width: 700px) {
+    .cf-order-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .cf-order-info-grid,
+    .cf-order-update-fields {
+        grid-template-columns: 1fr;
+    }
+
+    .cf-order-card {
+        padding: 20px;
+    }
+
+    .cf-order-products-header,
+    .cf-order-product-row {
+        grid-template-columns: 1.4fr 0.5fr 0.8fr 0.8fr;
+        gap: 8px;
+        font-size: 12px;
+    }
+
+    .cf-order-save-actions {
+        flex-wrap: wrap;
+    }
+}
+
+
+/* ORDER VIEW BUTTON */
+.cf-order-view-button {
+    display: inline-block;
+    padding: 10px 16px;
+    background: #593527;
+    color: #fff;
+    border-radius: 7px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.cf-order-view-button:hover {
+    background: #3b2119;
+    color: #fff;
+}
+
+
+
+/* STEP 58: CORRECT ORDER MANAGEMENT TABLE ALIGNMENT */
+
+/*
+ * LEARNING NOTE:
+ * The EJS table uses .order-management-table.
+ * CSS selectors must match the HTML class exactly.
+ */
+
+.order-management-page .order-table-scroll {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.order-management-page .order-management-table {
+    width: 100%;
+    min-width: 1050px;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+/* Equal padding and centred alignment */
+.order-management-page .order-management-table th,
+.order-management-page .order-management-table td {
+    box-sizing: border-box;
+    padding: 20px 12px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Column widths total 100% */
+.order-management-page .order-management-table th:nth-child(1) {
+    width: 7%;
+}
+
+.order-management-page .order-management-table th:nth-child(2) {
+    width: 19%;
+}
+
+.order-management-page .order-management-table th:nth-child(3) {
+    width: 17%;
+}
+
+.order-management-page .order-management-table th:nth-child(4) {
+    width: 7%;
+}
+
+.order-management-page .order-management-table th:nth-child(5) {
+    width: 11%;
+}
+
+.order-management-page .order-management-table th:nth-child(6) {
+    width: 14%;
+}
+
+.order-management-page .order-management-table th:nth-child(7) {
+    width: 11%;
+}
+
+.order-management-page .order-management-table th:nth-child(8) {
+    width: 14%;
+}
+
+/* Keep customer name and email together */
+.order-management-page .order-management-table td:nth-child(2) {
+    overflow-wrap: anywhere;
+}
+
+/* Consistent button size and positioning */
+.order-management-page .order-management-table .cf-order-view-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 10px 15px;
+    margin: 0 auto;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+
+/* STEP 67: Fulfilment method radio button styling */
+
+/*
+ * LEARNING NOTE:
+ * Radio buttons should retain their natural dimensions.
+ * Generic form input styles can otherwise stretch them
+ * across the entire form.
+ */
+
+.checkout-form .fulfilment-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 10px 0 20px;
+}
+
+.checkout-form .fulfilment-options label {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    margin: 0;
+    cursor: pointer;
+}
+
+.checkout-form .fulfilment-options input[type="radio"] {
+    appearance: auto;
+    -webkit-appearance: radio;
+    display: inline-block;
+    flex: 0 0 auto;
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    box-shadow: none;
+    accent-color: #56382c;
+}
+
+.checkout-form #delivery-fields[hidden],
+.checkout-form #delivery-fee-note[hidden] {
+    display: none !important;
+}
+
+
+/* STEP 68: Delivery address and postal code spacing */
+
+/*
+ * LEARNING NOTE:
+ * The delivery fields are grouped inside one container.
+ * CSS gap provides consistent spacing between form fields.
+ */
+
+.checkout-form #delivery-fields {
+    margin-top: 20px;
+}
+
+.checkout-form #delivery-fields:not([hidden]) {
+    display: flex;
+    flex-direction: column;
+}
+
+.checkout-form #delivery-fields label {
+    display: block;
+    margin: 0 0 8px;
+}
+
+.checkout-form #delivery-fields input {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0 0 20px;
+}
+
+.checkout-form #delivery-fields input:last-child {
+    margin-bottom: 12px;
+}
+
+
+
+/* STEP 75: Nine-column order management table */
+/*
+ * LEARNING NOTE:
+ * CSS nth-child applies widths to individual table columns.
+ * Horizontal scrolling protects readability on small screens.
+ */
+.order-management-page .order-management-table {
+    width: 100%;
+    min-width: 1120px;
+    table-layout: fixed;
+}
+
+.order-management-page .order-management-table th,
+.order-management-page .order-management-table td {
+    text-align: center !important;
+    vertical-align: middle !important;
+    padding: 18px 10px !important;
+}
+
+.order-management-page .order-management-table th:nth-child(1) { width: 6%; }
+.order-management-page .order-management-table th:nth-child(2) { width: 18%; }
+.order-management-page .order-management-table th:nth-child(3) { width: 15%; }
+.order-management-page .order-management-table th:nth-child(4) { width: 13%; }
+.order-management-page .order-management-table th:nth-child(5) { width: 6%; }
+.order-management-page .order-management-table th:nth-child(6) { width: 10%; }
+.order-management-page .order-management-table th:nth-child(7) { width: 12%; }
+.order-management-page .order-management-table th:nth-child(8) { width: 9%; }
+.order-management-page .order-management-table th:nth-child(9) { width: 11%; }
+
+.order-management-page .order-management-table td:nth-child(2) {
+    overflow-wrap: anywhere;
+}
+
+.order-management-page .order-management-table td:nth-child(9) .cf-order-view-button {
+    margin: 0 auto;
+}

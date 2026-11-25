@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title><%= typeof title !== 'undefined' ? title : 'ChocoFixCo' %></title>
+
+    <link rel="icon" type="image/png"
+          href="/images/chocofixco-products/02_logo-round.png">
+
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <!-- MODULE 8: Shared navigation -->
+    <header class="site-header">
+        <nav class="nav-container" aria-label="Main navigation">
+
+            <a class="brand" href="/" aria-label="ChocoFixCo home">
+                <img
+                    src="/images/chocofixco-products/01_logo.png"
+                    alt="ChocoFixCo">
+            </a>
+
+            <button
+                class="menu-toggle"
+                type="button"
+                aria-controls="nav-links"
+                aria-expanded="false"
+                aria-label="Toggle menu">
+                ☰
+            </button>
+
+            <div class="nav-links" id="nav-links">
+                <a href="/">Home</a>
+                <a href="/#collection">Our Chocolates</a>
+                <a href="/#our-story">Our Story</a>
+                <a href="/backend" class="backend-nav-link">
+                    Backend
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- EJS inserts the requested page here. -->
+        <%- body %>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <img
+                    src="/images/chocofixco-products/02_logo-round.png"
+                    alt="ChocoFixCo logo">
+
+                <div>
+                    <strong>ChocoFixCo</strong>
+                    <p>Made for life's sweeter moments.</p>
+                </div>
+            </div>
+
+            <div class="footer-links">
+                <a href="/">Home</a>
+                <a href="/#collection">Chocolates</a>
+                <a href="/backend">Backend</a>
+            </div>
+        </div>
+
+        <p class="footer-copyright">
+            © <span id="footer-year"></span> ChocoFixCo
+        </p>
+    </footer>
+
+    <script>
+    /*
+     * MODULE 8 JAVASCRIPT LEARNING NOTES
+     *
+     * querySelector() finds an HTML element.
+     * addEventListener() responds to user interaction.
+     * classList.toggle() opens and closes the mobile menu.
+     *
+     * This JavaScript changes the interface only.
+     * Database operations are handled by Express routes.
+     */
+
+    const menuButton = document.querySelector('.menu-toggle');
+    const navigation = document.querySelector('.nav-links');
+
+    if (menuButton && navigation) {
+        menuButton.addEventListener('click', () => {
+            const opened = navigation.classList.toggle('open');
+
+            menuButton.setAttribute(
+                'aria-expanded',
+                String(opened)
+            );
+        });
+
+        navigation.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navigation.classList.remove('open');
+                menuButton.setAttribute('aria-expanded', 'false');
+            });
+        });
+    }
+
+    document.getElementById('footer-year').textContent =
+        new Date().getFullYear();
+    </script>
+</body>
+</html>

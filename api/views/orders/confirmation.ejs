@@ -1,0 +1,55 @@
+
+<section class="order-confirmation">
+    <p class="boutique-label">ORDER RECEIVED</p>
+    <h1>Thank you for your order!</h1>
+    <p>Your chocolate <%= order.fulfilment_method === 'Delivery'
+        ? 'delivery' : 'collection' %> order has been recorded.</p>
+
+    <div class="confirmation-details">
+        <p><strong>Order reference:</strong>
+           #<%= order.order_id %></p>
+
+        <p><strong>Chocolate:</strong>
+           <%= order.product_name %></p>
+
+        <p><strong>Quantity:</strong>
+           <%= order.quantity %></p>
+
+        <p><strong>Fulfilment:</strong>
+           <%= order.fulfilment_method === 'Delivery'
+               ? 'Home Delivery' : 'Self Collection' %></p>
+
+        <p><strong>Chocolate subtotal:</strong>
+           S$<%= (
+               Number(order.total_amount) -
+               Number(order.delivery_fee)
+           ).toFixed(2) %></p>
+
+        <p><strong>Delivery fee:</strong>
+           S$<%= Number(order.delivery_fee).toFixed(2) %></p>
+
+        <p><strong>Grand total:</strong>
+           S$<%= Number(order.total_amount).toFixed(2) %></p>
+
+        <p><strong><%= order.fulfilment_method === 'Delivery'
+            ? 'Delivery date' : 'Collection date' %>:</strong>
+           <%= order.collection_date %></p>
+
+        <% if (order.fulfilment_method === 'Delivery') { %>
+            <p><strong>Delivery address:</strong>
+               <%= order.delivery_address %></p>
+            <p><strong>Postal code:</strong>
+               <%= order.postal_code %></p>
+        <% } %>
+
+        <p><strong>Order status:</strong>
+           <%= order.order_status %></p>
+
+        <p><strong>Payment status:</strong>
+           <%= order.payment_status %></p>
+    </div>
+
+    <a href="/" class="boutique-button">
+        Back to Chocolate Shop
+    </a>
+</section>

@@ -1,0 +1,223 @@
+<!-- ==============================================
+     CHOCOFIXCO MODULE 8 CUSTOMER STOREFRONT
+
+     Express + MariaDB + EJS
+
+     This page displays products from the database.
+     It does not create orders until the checkout
+     routes have been implemented and tested.
+     ============================================== -->
+
+<div class="boutique-storefront">
+
+    <!-- HERO -->
+    <section class="boutique-hero">
+
+        <div class="boutique-hero-copy">
+            <div class="boutique-kicker">
+                <span class="kicker-line"></span>
+                CHOCOFIXCO COLLECTION
+            </div>
+
+            <h1>
+                Little bites.<br>
+                <em>Beautiful moments.</em>
+            </h1>
+
+            <p>
+                Thoughtfully made chocolate treats for
+                sharing, celebrating and gifting.
+            </p>
+
+            <div class="boutique-hero-actions">
+                <a href="#collection" class="boutique-button">
+                    Explore Our Chocolates
+                    <span aria-hidden="true">↗</span>
+                </a>
+            </div>
+
+            <div class="boutique-hero-footnote">
+                A LITTLE INDULGENCE, A LOT OF JOY
+            </div>
+        </div>
+
+        <div class="boutique-hero-photo">
+            <img
+                src="/images/chocofixco-new/Choc1.3.jpeg"
+                alt="Beautifully presented ChocoFixCo chocolates">
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- COLLECTION -->
+    <section id="collection" class="boutique-collection">
+
+        <div class="boutique-section-top">
+            <div>
+                <p class="boutique-label">DISCOVER YOUR FAVOURITES</p>
+                <h2>Our chocolate <em>collection.</em></h2>
+            </div>
+
+            <p>
+                From little treats to thoughtful gifts,
+                find something sweet for every occasion.
+            </p>
+        </div>
+
+        <!--
+          EJS LEARNING NOTE:
+
+          products is supplied by the Express GET / route.
+          Each product is a record from the Products table.
+
+          The conditional handles an empty product list.
+        -->
+
+        <div class="boutique-product-grid">
+
+            <% if (products && products.length > 0) { %>
+
+                <% products.forEach((product, index) => { %>
+
+                    <article class="boutique-product-card">
+
+                        <div class="boutique-product-image-wrap">
+
+                            <img
+                                src="<%= product.image_path || '/images/chocofixco-products/12_chocolate-box-assorted.jpg' %>"
+                                alt="<%= product.name %>"
+                                loading="lazy">
+
+
+
+                        </div>
+
+                        <div class="boutique-product-info">
+
+                            <div class="boutique-product-title-row">
+                                <h3><%= product.name %></h3>
+
+                                <strong>
+                                    S$<%= Number(product.price).toFixed(2) %>
+                                </strong>
+                            </div>
+
+                            <p>
+                                <%= product.description || 'A chocolate treat to enjoy and share.' %>
+                            </p>
+
+                            <div class="boutique-product-meta">
+
+                                <% if (Number(product.stock_quantity) > 0) { %>
+                                    <span class="boutique-available">
+                                        <span class="stock-dot"></span>
+                                        Available
+                                    </span>
+                                <% } else { %>
+                                    <span class="boutique-unavailable">
+                                        Sold out
+                                    </span>
+                                <% } %>
+
+                                <!--
+                                  Ordering is intentionally disabled
+                                  until Express order creation is ready.
+                                  This prevents a misleading checkout.
+                                -->
+                                <% if (Number(product.stock_quantity) > 0) { %>
+                                    <a class="boutique-order-button"
+                                       href="/order/<%= product.product_id %>">
+                                        Order Now <span aria-hidden="true">→</span>
+                                    </a>
+                                <% } %>
+
+                            </div>
+
+                        </div>
+                    </article>
+
+                <% }) %>
+
+            <% } else { %>
+
+                <p class="boutique-empty">
+                    Our chocolate collection is being prepared.
+                </p>
+
+            <% } %>
+
+        </div>
+    </section>
+
+    <!-- FEATURE STORY -->
+    <section id="our-story" class="boutique-story">
+
+        <div class="boutique-story-image">
+            <img
+                src="/images/chocofixco-new/choc_bar.jpeg"
+                alt="Chocolate bar presented with beautiful toppings"
+                loading="lazy">
+        </div>
+
+        <div class="boutique-story-content">
+            <p class="boutique-label">SWEET MOMENTS</p>
+
+            <h2>
+                More than chocolate.<br>
+                <em>A little happiness.</em>
+            </h2>
+
+            <p>
+                Whether it's a gift for someone special,
+                a treat for yourself or a celebration
+                worth remembering, chocolate has a way
+                of making the moment sweeter.
+            </p>
+
+            <a href="#collection" class="boutique-text-link">
+                Discover the collection
+                <span aria-hidden="true">↗</span>
+            </a>
+        </div>
+
+    </section>
+
+    <!-- PHOTOGRAPHY GALLERY -->
+    <section class="boutique-gallery-section">
+
+        <div class="boutique-gallery-heading">
+            <p class="boutique-label">A CLOSER LOOK</p>
+            <h2>Made to <em>tempt.</em></h2>
+        </div>
+
+        <div class="boutique-gallery-grid">
+
+            <img
+                src="/images/chocofixco-new/chco_square.jpeg"
+                alt="Artisan chocolate assortment"
+                loading="lazy">
+
+            <img
+                src="/images/chocofixco-new/choc_doughnut.jpeg"
+                alt="Chocolate doughnut with toppings"
+                loading="lazy">
+
+            <img
+                src="/images/chocofixco-new/Choc1.2.jpeg"
+                alt="Chocolate gift presentation"
+                loading="lazy">
+
+            <img
+                src="/images/chocofixco-new/Choc1.5.jpeg"
+                alt="ChocoFixCo chocolate selection"
+                loading="lazy">
+
+        </div>
+
+    </section>
+
+</div>

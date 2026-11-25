@@ -1,0 +1,273 @@
+
+<section class="cf-order-detail">
+
+    <a href="/manage/orders" class="cf-order-back">
+        ← Back to All Orders
+    </a>
+
+    <div class="cf-order-header">
+        <div>
+            <p class="cf-admin-eyebrow">CHOCOFIXCO BACKEND</p>
+            <h1>Order #<%= order.order_id %></h1>
+            <p>Review customer details and manage fulfilment.</p>
+        </div>
+
+        <div class="cf-order-header-status">
+            <span class="cf-order-status-badge <%= order.order_status === 'Cancelled'
+                ? 'cf-order-cancelled'
+                : order.order_status === 'Completed'
+                    ? 'cf-order-completed'
+                    : 'cf-order-progress' %>">
+                <%= order.order_status %>
+            </span>
+
+            <span class="cf-order-payment-badge">
+                <%= order.payment_status %>
+            </span>
+        </div>
+    </div>
+
+    <div class="cf-order-info-grid">
+
+        <div class="cf-order-card">
+            <h2>Customer Information</h2>
+
+            <div class="cf-order-info-row">
+                <span>Customer Name</span>
+                <strong><%= order.full_name %></strong>
+            </div>
+
+            <div class="cf-order-info-row">
+                <span>Email Address</span>
+                <strong><%= order.email %></strong>
+            </div>
+
+            <div class="cf-order-info-row">
+                <span>Phone Number</span>
+                <strong><%= order.phone || 'Not provided' %></strong>
+            </div>
+        </div>
+
+        <div class="cf-order-card">
+            <h2>Order Summary</h2>
+
+            <div class="cf-order-info-row">
+                <span>Order Reference</span>
+                <strong>#<%= order.order_id %></strong>
+            </div>
+
+            <div class="cf-order-info-row">
+                <span><%= order.fulfilment_method === 'Delivery'
+                    ? 'Delivery Date' : 'Collection Date' %></span>
+                <strong>
+                    <%= order.collection_date_display || 'Not set' %>
+                </strong>
+            </div>
+
+            <div class="cf-order-info-row">
+                <span>Fulfilment</span>
+                <strong><%= order.fulfilment_method === 'Delivery'
+                    ? 'Home Delivery' : 'Self Collection' %></strong>
+            </div>
+
+            <% if (order.fulfilment_method === 'Delivery') { %>
+                <div class="cf-order-info-row">
+                    <span>Delivery Address</span>
+                    <strong><%= order.delivery_address || 'Not provided' %></strong>
+                </div>
+
+                <div class="cf-order-info-row">
+                    <span>Postal Code</span>
+                    <strong><%= order.postal_code || 'Not provided' %></strong>
+                </div>
+            <% } %>
+
+            <div class="cf-order-info-row">
+                <span>Total Items</span>
+                <strong>
+                    <%= items.reduce(
+                        (total, item) => total + Number(item.quantity),
+                        0
+                    ) %>
+                </strong>
+            </div>
+
+            <div class="cf-order-info-row">
+                <span>Chocolate Subtotal</span>
+                <strong>S$<%= (
+                    Number(order.total_amount) -
+                    Number(order.delivery_fee)
+                ).toFixed(2) %></strong>
+            </div>
+
+            <div class="cf-order-info-row">
+                <span>Delivery Fee</span>
+                <strong>S$<%= Number(order.delivery_fee).toFixed(2) %></strong>
+            </div>
+
+            <div class="cf-order-info-row cf-order-total-row">
+                <span>Grand Total</span>
+                <strong>
+                    S$<%= Number(order.total_amount).toFixed(2) %>
+                </strong>
+            </div>
+        </div>
+    </div>
+
+    <div class="cf-order-card cf-order-products">
+        <h2>Purchased Chocolates</h2>
+
+        <div class="cf-order-products-header">
+            <span>Product</span>
+            <span>Quantity</span>
+            <span>Unit Price</span>
+            <span>Subtotal</span>
+        </div>
+
+        <% items.forEach(function(item) { %>
+            <div class="cf-order-product-row">
+                <div>
+                    <strong><%= item.product_name %></strong>
+                </div>
+
+                <span><%= item.quantity %></span>
+
+                <span>
+                    S$<%= Number(item.unit_price).toFixed(2) %>
+                </span>
+
+                <strong>
+                    S$<%= (
+                        Number(item.unit_price) *
+                        Number(item.quantity)
+                    ).toFixed(2) %>
+                </strong>
+            </div>
+        <% }); %>
+
+        <div class="cf-order-products-total">
+            <span>Grand Total (including delivery)</span>
+            <strong>
+                S$<%= Number(order.total_amount).toFixed(2) %>
+            </strong>
+        </div>
+    </div>
+
+    <div class="cf-order-card cf-order-update-card">
+
+        <div class="cf-order-update-heading">
+            <div>
+                <h2>Update Order</h2>
+                <p>Manage order progress and payment status.</p>
+            </div>
+        </div>
+
+        <% if (order.order_status === 'Cancelled') { %>
+            <div class="cf-order-notice">
+                This order has been cancelled. Its stock has already
+                been restored, and the order cannot be reopened.
+            </div>
+        <% } %>
+
+        <form method="POST"
+              action="/manage/orders/<%= order.order_id %>/update"
+              class="cf-order-update-form">
+
+            <div class="cf-order-update-fields">
+
+                <label for="order_status">
+                    Order Status
+
+                    <select name="order_status"
+                            id="order_status"
+                            <%= order.order_status === 'Cancelled'
+                                ? 'disabled' : '' %>>
+                        <% statuses.forEach(function(item) { %>
+                            <option value="<%= item %>"
+                                <%= order.order_status === item
+                                    ? 'selected' : '' %>>
+                                <%= item %>
+                            </option>
+                        <% }); %>
+                    </select>
+                </label>
+
+                <label for="payment_status">
+                    Payment Status
+
+                    <select name="payment_status"
+                            id="payment_status">
+                        <% paymentStatuses.forEach(function(item) { %>
+                            <option value="<%= item %>"
+                                <%= order.payment_status === item
+                                    ? 'selected' : '' %>>
+                                <%= item %>
+                            </option>
+                        <% }); %>
+                    </select>
+                </label>
+            </div>
+
+            <% if (order.order_status === 'Cancelled') { %>
+                <input type="hidden"
+                       name="order_status"
+                       value="Cancelled">
+            <% } %>
+
+            <% if (order.order_status !== 'Cancelled' && order.order_status !== 'Completed') { %>
+            <div id="cf-cancellation-warning"
+                 class="cf-order-danger-notice"
+                 hidden>
+                <strong>Cancellation Warning</strong>
+                <p>
+                    Cancelling this order will restore its
+                    purchased quantities to product stock.
+                    This action cannot be reversed.
+                </p>
+            </div>
+            <% } %>
+
+            <p class="cf-order-help-text">
+                Completed orders cannot be cancelled automatically.
+                Payment status changes do not process actual payments.
+            </p>
+
+            <div class="cf-order-save-actions">
+                <a href="/manage/orders"
+                   class="cf-reset-button">
+                    Back to Orders
+                </a>
+
+                <button type="submit"
+                        class="cf-primary-button">
+                    Save Changes
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<script>
+/*
+ * MODULE 8 LEARNING NOTE:
+ * JavaScript displays a warning when cancellation is selected.
+ * The actual stock restoration remains inside the Express
+ * backend transaction, not in the browser.
+ */
+
+(() => {
+    const status = document.getElementById('order_status');
+    const warning = document.getElementById(
+        'cf-cancellation-warning'
+    );
+
+    if (!status || !warning) return;
+
+    function updateWarning() {
+        warning.hidden = status.value !== 'Cancelled';
+    }
+
+    status.addEventListener('change', updateWarning);
+    updateWarning();
+})();
+</script>

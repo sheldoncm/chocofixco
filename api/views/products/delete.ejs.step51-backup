@@ -1,0 +1,13 @@
+<!-- DELETE CONFIRMATION
+     GET displays the confirmation; POST performs DELETE.
+     This prevents accidental deletion through a normal link. -->
+<section class="management-page">
+    <h1>Delete Chocolate?</h1>
+    <p>Are you sure you want to delete <strong><%= product.name %></strong>?</p>
+    <p>This action cannot be undone.</p>
+
+    <form method="POST" action="/manage/products/<%= product.product_id %>/delete">
+        <button type="submit">Yes, Delete Product</button>
+        <a href="/manage/products">Cancel</a>
+    </form>
+</section>

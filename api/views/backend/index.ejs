@@ -1,0 +1,38 @@
+<!-- =========================================================
+     CHOCOFIXCO - BACKEND DASHBOARD
+     MODULE 8 LEARNING NOTES
+
+     This EJS page provides one central entry point for
+     product and order management.
+
+     Express renders this page using res.render().
+     Links navigate to separate CRUD routes.
+     ========================================================= -->
+
+<section class="management-page backend-dashboard">
+    <div class="section-heading">
+        <p class="eyebrow">CHOCOFIXCO BACKEND</p>
+        <h1>Business Management</h1>
+        <p>Manage your chocolate products and customer orders.</p>
+    </div>
+
+    <div class="backend-grid">
+        <article class="backend-card">
+            <div class="backend-card-icon">🍫</div>
+            <h2>Product Management</h2>
+            <p>Add chocolates, update prices, manage stock and maintain your product catalogue.</p>
+            <a class="management-button" href="/manage/products">
+                Manage Products
+            </a>
+        </article>
+
+        <article class="backend-card">
+            <div class="backend-card-icon">📦</div>
+            <h2>Order Management</h2>
+            <p>View customer orders, update order statuses and manage fulfilment.</p>
+            <a class="management-button" href="/manage/orders">
+                Manage Orders
+            </a>
+        </article>
+    </div>
+</section>

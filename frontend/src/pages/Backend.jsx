@@ -77,9 +77,6 @@ export default function Backend() {
           <p className="boutique-label">CHOCOFIXCO · ADMINISTRATION</p>
           <h1>Business Management</h1>
           <p>Manage your chocolate business in one place.</p>
-          <Link href="/admin/account" className="cf-user-action">
-            My Admin Account
-          </Link>
         </div>
 
         <div className="admin-management-grid">

@@ -38,16 +38,18 @@ export default function AdminHeader() {
 
   return (
     <header className="site-header">
-      <nav className="nav-container"
+      <nav className="nav-container admin-navigation"
         aria-label="Administration navigation">
-        <Link className="brand" href="/backend">
-          <img
-            src="/images/chocofixco-products/01_logo.png"
-            alt="ChocoFixCo"
-          />
-        </Link>
+        <div className="admin-brand-group">
+          <Link className="brand" href="/backend">
+            <img
+              src="/images/chocofixco-products/01_logo.png"
+              alt="ChocoFixCo"
+            />
+          </Link>
 
-        <span className="admin-portal-label">Admin Portal</span>
+          <span className="admin-portal-label">Admin Portal</span>
+        </div>
 
         {admin && (
           <>

@@ -1,0 +1,35 @@
+/* React management additions.
+   Original Module 8 storefront stylesheet remains in use. */
+
+.react-management .card {
+  border-radius: 12px;
+  background: #fff;
+}
+
+.react-management .product-thumbnail {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.react-management .product-preview {
+  width: 150px;
+  max-height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.react-management .management-button {
+  cursor: pointer;
+}
+
+.react-management button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.management-page > a,
+.management-page > p > a {
+  color: #563324;
+}

@@ -1,264 +1,228 @@
-# ChocoFixCo Order and Production Manager
+# ChocoFixCo
 
-BELLS Institute – Module 5: Datacentric Development Assessment
+## Module 7 — Modern Frameworks Using AI Engineering
 
-## Project Overview
+ChocoFixCo is a chocolate e-commerce and business management
+application developed using React, Express and MariaDB.
 
-ChocoFixCo is a chocolate order management application using a RESTful API, MongoDB Atlas, JWT authentication, and AI-generated database queries.
+This project builds upon the previous Module 8 application,
+migrating the EJS frontend to a React Single Page Application
+while retaining the existing database and business logic.
 
 ## Technology Stack
 
-- Frontend: HTML, CSS, JavaScript
-- Backend: Node.js and Express
-- Database: MongoDB Atlas
-- Authentication: JWT and bcryptjs
-- AI Provider: OpenRouter
-- AI Model: DeepSeek V3.2
-- API Testing: Advanced REST Client (ARC)
-- Development Environment: GitHub Codespaces
+- React and Vite
+- JavaScript and JSX
+- Axios
+- Wouter
+- Jotai
+- Bootstrap CSS
+- Express.js
+- MariaDB
 
-## REST API Endpoints
+## Application Features
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | /health | API health check |
-| GET | /products | List or search products |
-| POST | /products | Create product |
-| PUT | /products/:id | Update product |
-| DELETE | /products/:id | Delete product |
-| GET | /orders | List orders |
-| POST | /orders | Create order |
-| PUT | /orders/:id | Update order |
-| DELETE | /orders/:id | Delete order |
-| POST | /auth/register | Register user |
-| POST | /auth/login | Login and obtain JWT |
-| GET | /auth/me | Protected user endpoint |
-| POST | /ai/query | Protected AI-generated MongoDB query |
+### Customer Storefront
 
-Product search example:
+- Dynamic chocolate catalogue
+- Product availability and stock display
+- Customer ordering
+- Self-collection and home delivery
+- Reactive order total calculation
+- Order confirmation
 
-GET /products?search=chocolate
+### Business Management
 
-## MongoDB Database
+- Product creation, retrieval, updating and deletion
+- Product image uploads
+- Product search, filtering and sorting
+- Stock and availability management
+- Customer order management
+- Order and payment status updates
+- Stock restoration upon eligible order cancellation
 
-Database: chocofix
+## Learning Outcomes
 
-Collections:
-- products
-- orders
-- users
+### LO1 — Reactive Frameworks
 
-Products contain fields such as name, category, price, stock, and description.
+React uses declarative components and reactive state.
+When state changes, React updates the relevant interface.
 
-Orders contain customer and product information, quantities, and order status.
+The frontend was created using Vite:
 
-A product-order relationship is demonstrated using an order's productId reference to a product document.
+    npm create vite@latest frontend -- --template react
 
-## Authentication
+### LO2 — React Hooks and Form Processing
 
-Passwords are hashed using bcryptjs.
+useState manages form inputs, navigation, loading states,
+search filters and application feedback.
 
-Successful login returns a JWT.
+useEffect retrieves data from REST API endpoints.
 
-Protected routes require:
+Controlled inputs include text fields, numbers, textareas,
+checkboxes, radio buttons, select controls and dates.
 
-Authorization: Bearer <JWT>
+### LO3 — Components and Props
 
-## AI Integration
+Reusable components include Header, Footer, Hero,
+Collection, ProductCard, ProductForm and InfoRows.
 
-The application uses OpenRouter with DeepSeek V3.2.
+Props pass data and callback functions between components.
 
-The AI receives a natural-language question and generates a structured JSON MongoDB query plan.
+### LO4 — State Management and CRUD
 
-Example question:
+Jotai provides shared state between components.
 
-How many completed orders are there?
+productsAtom shares product catalogue state.
 
-Example generated query:
+confirmationAtom shares submitted order information
+between checkout and confirmation pages.
 
-{
-  "collection": "orders",
-  "operation": "count",
-  "filter": {
-    "orderStatus": "Completed"
-  }
-}
+Immutable array operations:
 
-The backend validates the generated query and executes permitted read-only MongoDB operations.
+- Create: spread operator
+- Read: map and REST API retrieval
+- Update: map
+- Delete: filter
 
-Supported AI operations:
-- find
-- count
+### LO5 — Single Page Application Routing
 
-Supported collections:
-- products
-- orders
+Wouter provides client-side navigation.
 
-The AI cannot execute database updates or deletions.
+Routes:
 
-## AI-Generated Mock Data
+- /
+- /backend
+- /manage/products
+- /order/:id
+- /order/confirmation/:id
+- /manage/orders
+- /manage/orders/:id
 
-OpenRouter was used to generate a fictional chocolate product record.
+## REST API
 
-The generated JSON was inserted into MongoDB Atlas and verified through the REST API.
+| Method | Endpoint | Purpose |
+|---|---|---|
+| GET | /api/products | Active products |
+| GET | /api/manage/products | All products |
+| POST | /api/manage/products | Create product |
+| PUT | /api/manage/products/:id | Update product |
+| DELETE | /api/manage/products/:id | Delete product |
+| GET | /api/order/:id | Retrieve checkout product |
+| POST | /api/order/:id | Create customer order |
+| GET | /api/manage/orders | Retrieve orders |
+| GET | /api/manage/orders/:id | Retrieve order details |
+| PUT | /api/manage/orders/:id | Update order status |
 
-Sample product:
-- Name: AI Assessment Sample Chocolate
-- Category: Dark Chocolate
-- Price: 4.99
-- Stock: 25
+## Database
+
+MariaDB stores products, customers, orders and order items.
+
+The backend uses parameterised SQL queries, server-side
+validation and database transactions.
+
+Database transactions protect order creation, stock deduction
+and cancellation stock restoration.
 
 ## Local Setup
 
-1. Clone the repository.
-2. Open the api directory.
-3. Run npm install.
-4. Create api/.env with the required configuration:
+Prerequisites:
 
-MONGO_URI=<MongoDB connection string>
-JWT_SECRET=<JWT signing secret>
-OPENROUTER_API_KEY=<OpenRouter API key>
-OPENROUTER_MODEL=deepseek/deepseek-v3.2
+- Node.js 22
+- npm
+- MariaDB
+- Git
 
-5. Start the backend:
+### Database Configuration
 
-node index.js
+For a new database, create the chocofixco database and
+import the schema.sql and seed.sql files.
 
-6. Open the frontend using a local web server.
+Inspect delivery_migration.sql and apply it if the delivery
+columns are not already included in the database schema.
 
-Never commit the .env file or API credentials.
+Do not reseed or reset an existing working database.
 
-## Testing
+Create api/.env using the supplied environment example.
+Enter the correct local database credentials.
 
-The following were tested:
+### Start Backend
 
-- API health check
-- Product CRUD
-- Order CRUD
-- MongoDB persistence
-- JWT authentication
-- Protected endpoints
-- AI-generated MongoDB queries
-- AI-generated mock data insertion
-- API requests using Advanced REST Client
+    cd api
+    npm ci
+    node module8.js
 
-## GitHub Repository
+Backend: http://localhost:3001
 
-https://github.com/sheldoncm/chocofixco-order-manager
+### Start Frontend
 
-## Assessment Evidence
+In a separate terminal:
 
-Screenshots should demonstrate:
-- REST API requests and responses in ARC
-- MongoDB collections and product-order relationship
-- JWT login and protected API access
-- AI-generated query and database result
-- AI-generated mock data
-- Working frontend
+    cd frontend
+    npm ci
+    npm run dev
 
-## Assessment Demonstration Guide — LO6 and LO8
+Frontend: http://localhost:5173
 
-### Before the demonstration
+Vite proxies API requests and static assets to Express.
 
-1. Open GitHub Codespaces.
-2. Start the API:
+## Validation
 
-   cd api
-   node index.js
+    cd frontend
+    npm run lint
+    npm run build
 
-3. Confirm the API is running on port 3000.
-4. Open Advanced REST Client (ARC).
-5. Ensure the Codespaces port 3000 is accessible from ARC.
+## Project Structure
 
-### Login and authentication
+    api/
+      routes/
+      views/
+      public/
+      db.js
+      module8.js
+    frontend/
+      src/
+        components/
+        pages/
+        state/
+        utils/
+      vite.config.js
+    schema.sql
+    seed.sql
+    assessment_seed.sql
+    delivery_migration.sql
 
-1. Open the existing POST /auth/login request in ARC.
-2. Click Send.
-3. Confirm HTTP 200 and a JWT in the response.
-4. Copy the returned token into the ARC environment variable AUTH_TOKEN.
-5. Protected requests use the header:
+## Assessment Demonstration
 
-   Authorization: Bearer ${AUTH_TOKEN}
+1. Open the React storefront.
+2. Explain components, props and reactive state.
+3. Navigate to Business Management.
+4. Demonstrate product creation, reading, editing and deletion.
+5. Explain controlled form inputs.
+6. Demonstrate Jotai shared state.
+7. Explain Axios REST API integration.
+8. Demonstrate Wouter navigation.
+9. Place a customer order.
+10. Demonstrate order management and database persistence.
 
-6. Do not replace JWT_SECRET or OPENROUTER_API_KEY.
+Learning notes are embedded throughout the source code.
 
-### LO6 — AI-generated MongoDB query
+## Limitations
 
-1. Open the existing POST /ai/query request in ARC.
-2. Select BODY and use JSON.
-3. Enter:
+This is a local educational assessment application.
 
-   {
-     "question": "How many completed orders are there?"
-   }
+The original Express/EJS pages remain available as a fallback.
 
-4. Click Send.
-5. Confirm HTTP 200.
-6. Find generatedQuery in the response.
+React order confirmation is held in memory and is not retained
+after a full browser refresh.
 
-Expected query structure:
+Production deployment requires authentication, authorisation,
+privacy protection and additional security hardening.
 
-   {
-     "collection": "orders",
-     "operation": "count",
-     "filter": {
-       "orderStatus": "Completed"
-     }
-   }
+No actual online payments are processed.
 
-The data.count value is calculated from MongoDB and may change.
+## AI-Assisted Development
 
-Explain to the assessor:
-
-"DeepSeek converts my natural-language question into a MongoDB
-query plan. Express validates the generated query and executes
-it against MongoDB Atlas."
-
-### LO8 — System prompt and structured JSON
-
-1. Open api/aiRoutes.js in GitHub Codespaces.
-2. Locate the system message sent to OpenRouter.
-3. Show the allowed collections, fields and query operations.
-4. Explain that the system prompt instructs DeepSeek to return
-   JSON with collection, operation and filter.
-5. Return to ARC and show the generatedQuery JSON response.
-
-Explain to the assessor:
-
-"The system prompt tells DeepSeek which MongoDB collections,
-fields and operations are allowed. DeepSeek returns structured
-JSON according to that schema. The backend validates the
-response before running the query."
-
-### Additional demonstration questions
-
-Use these one at a time in POST /ai/query:
-
-   {"question":"How many orders are currently in the database?"}
-
-   {"question":"How many products are in the database?"}
-
-   {"question":"Show all products."}
-
-Results depend on current MongoDB records.
-
-### Evidence screenshots
-
-Capture screenshots showing:
-
-1. POST /auth/login — HTTP 200 (login successful).
-2. POST /ai/query — question and HTTP 200 response.
-3. The generatedQuery JSON and MongoDB result.
-4. The system prompt in api/aiRoutes.js.
-5. The products collection containing the AI-generated sample.
-6. REST API CRUD requests and responses.
-
-### Important distinction
-
-LO6 demonstrates the AI generating a MongoDB query.
-
-LO8 demonstrates the system prompt instructing an LLM to
-produce structured JSON according to a defined schema.
-
-Both learning outcomes use the existing POST /ai/query endpoint.
-A website chatbot is not required by the assessment.
+AI assistance was used for implementation, troubleshooting,
+documentation and migration guidance. The application is
+developed and tested locally using Visual Studio Code.

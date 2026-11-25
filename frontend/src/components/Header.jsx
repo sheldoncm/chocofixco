@@ -1,24 +1,54 @@
-// FF01: COMPONENTS AND JSX
-// LO3: Demonstrate creating components in React.
+import { Link } from 'wouter'
+import { useState } from 'react'
+
+// FF01: React state and event handling.
+// LO2: Demonstrate useState and event handlers.
 //
-// A component is a reusable function that returns JSX.
-// Component names must begin with a capital letter.
+// Unlike direct DOM manipulation, changing state causes
+// React to re-render the relevant interface automatically.
 
 export default function Header() {
+  const [menuOpen, setMenuOpen] = useState(false)
+
+  function closeMenu() {
+    setMenuOpen(false)
+  }
+
   return (
     <header className="site-header">
       <nav className="nav-container" aria-label="Main navigation">
-        <a href="#home">
+        <Link className="brand" href="/" aria-label="ChocoFixCo home">
           <img
-            className="brand-logo"
             src="/images/chocofixco-products/01_logo.png"
             alt="ChocoFixCo"
           />
-        </a>
+        </Link>
 
-        <div className="nav-links">
-          <a href="#home">Home</a>
-          <a href="#chocolates">Shop Chocolates</a>
+        <button
+          className="menu-toggle"
+          type="button"
+          aria-controls="nav-links"
+          aria-expanded={menuOpen}
+          aria-label="Toggle menu"
+          onClick={() => setMenuOpen(previous => !previous)}
+        >
+          ☰
+        </button>
+
+        <div
+          id="nav-links"
+          className={`nav-links ${menuOpen ? 'open' : ''}`}
+        >
+          <Link href="/" onClick={closeMenu}>Home</Link>
+          <a href="/#collection" onClick={closeMenu}>Our Chocolates</a>
+          <a href="/#our-story" onClick={closeMenu}>Our Story</a>
+          <Link
+            href="/backend"
+            className="backend-nav-link"
+            onClick={closeMenu}
+          >
+            Backend
+          </Link>
         </div>
       </nav>
     </header>

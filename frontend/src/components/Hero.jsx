@@ -1,36 +1,47 @@
-// FF01: JSX AND COMPONENTS
-//
-// JSX allows HTML-like syntax inside JavaScript.
-// React uses className instead of the HTML class attribute.
-// Images and other empty elements must be self-closing.
+// FF01: JSX and reusable React components.
+// LO3: Component composition.
+// Original Module 8 design retained during migration.
 
 export default function Hero() {
   return (
-    <section id="home" className="hero">
-      <div className="hero-content">
-        <p className="eyebrow">HANDMADE CHOCOLATE TREATS</p>
+<section className="boutique-hero">
 
-        <h1>
-          A little chocolate.<br />
-          A lot of happiness.
-        </h1>
+        <div className="boutique-hero-copy">
+            <div className="boutique-kicker">
+                <span className="kicker-line"></span>
+                CHOCOFIXCO COLLECTION
+            </div>
 
-        <p className="hero-copy">
-          Discover our handcrafted chocolates,
-          made for every occasion.
-        </p>
+            <h1>
+                Little bites.<br />
+                <em>Beautiful moments.</em>
+            </h1>
 
-        <a className="primary-button" href="#chocolates">
-          Explore Chocolates
-        </a>
-      </div>
+            <p>
+                Thoughtfully made chocolate treats for
+                sharing, celebrating and gifting.
+            </p>
 
-      <div className="hero-visual">
-        <img
-          src="/images/chocofixco-products/03_hero.jpg"
-          alt="ChocoFixCo handmade chocolate selection"
-        />
-      </div>
+            <div className="boutique-hero-actions">
+                <a href="#collection" className="boutique-button">
+                    Explore Our Chocolates
+                    <span aria-hidden="true">↗</span>
+                </a>
+            </div>
+
+            <div className="boutique-hero-footnote">
+                A LITTLE INDULGENCE, A LOT OF JOY
+            </div>
+        </div>
+
+        <div className="boutique-hero-photo">
+            <img
+                src="/images/chocofixco-new/Choc1.3.jpeg"
+                alt="Beautifully presented ChocoFixCo chocolates" />
+
+
+        </div>
+
     </section>
   )
 }

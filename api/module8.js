@@ -80,6 +80,15 @@ app.use('/order', require('./routes/orderRouter'));
 // Order Management: read, search, update and cancel.
 app.use('/manage/orders', require('./routes/orderManagementRouter'));
 
+// Modern Frameworks: JSON REST API for the React frontend.
+app.use('/api/products', require('./routes/reactProductRouter'));
+
+app.use('/api/manage/products', require('./routes/reactManagementRouter'));
+
+app.use('/api/order', require('./routes/reactOrderRouter'));
+
+app.use('/api/manage/orders', require('./routes/reactOrderManagementRouter'));
+
 // Start the server after Express has registered its routes.
 app.listen(PORT, () => {
     console.log(`ChocoFixCo Module 8 running at http://localhost:${PORT}`);

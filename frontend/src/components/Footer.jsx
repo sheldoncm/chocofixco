@@ -1,16 +1,31 @@
-// FF01: REUSABLE COMPONENTS
-//
-// The Footer can be reused across multiple pages.
-// Curly braces evaluate JavaScript expressions inside JSX.
+// FF01: Reusable component and JSX expressions.
+// Curly braces evaluate JavaScript inside JSX.
 
 export default function Footer() {
   return (
-    <footer className="site-footer">
-      <p>A little chocolate. A lot of happiness.</p>
-      <small>
-        &copy; {new Date().getFullYear()} ChocoFixCo.
-        All rights reserved.
-      </small>
+<footer className="site-footer">
+        <div className="footer-container">
+            <div className="footer-brand">
+                <img
+                    src="/images/chocofixco-products/02_logo-round.png"
+                    alt="ChocoFixCo logo" />
+
+                <div>
+                    <strong>ChocoFixCo</strong>
+                    <p>Made for life's sweeter moments.</p>
+                </div>
+            </div>
+
+            <div className="footer-links">
+                <a href="/">Home</a>
+                <a href="/#collection">Chocolates</a>
+                <a href="/backend">Backend</a>
+            </div>
+        </div>
+
+        <p className="footer-copyright">
+            © {new Date().getFullYear()} ChocoFixCo
+        </p>
     </footer>
   )
 }

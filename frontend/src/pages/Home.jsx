@@ -1,22 +1,18 @@
-// FF01: COMPONENT COMPOSITION
-//
-// Larger interfaces are built by combining smaller components.
-// A JSX Fragment groups elements without adding a DOM container.
-
 import Hero from '../components/Hero'
+import Collection from '../components/Collection'
+import Story from '../components/Story'
+import Gallery from '../components/Gallery'
+
+// FF01: Component composition.
+// LO3: Build an interface using reusable components.
 
 export default function Home() {
   return (
-    <>
+    <div className="boutique-storefront">
       <Hero />
-
-      <section id="chocolates" className="content-section">
-        <p className="eyebrow">OUR COLLECTION</p>
-        <h2>Choose your chocolate</h2>
-        <p>Discover your next chocolate favourite.</p>
-
-        {/* Product catalogue will be implemented in FF02. */}
-      </section>
-    </>
+      <Collection />
+      <Story />
+      <Gallery />
+    </div>
   )
 }
